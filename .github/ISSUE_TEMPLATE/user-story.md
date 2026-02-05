@@ -3,7 +3,7 @@ name: User Story
 about: Template User Story
 title: ''
 labels: ''
-assignees: isasabic
+assignees: ''
 
 ---
 
