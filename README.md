@@ -1,20 +1,12 @@
-# 🚀 CJG Capelle – AI Project
+# CJG Capelle AI Project
 
-## 📌 Overview
+## Overview
 This project focuses on improving the decision-making process ("beschikkingsproces") within CJG Capelle aan den IJssel using AI.  
 The goal is to support employees with a clearer, faster and more structured workflow.
 
 ---
 
-## 🎯 Goals
-- Understand the current decision-making process  
-- Identify bottlenecks and inefficiencies  
-- Design an AI-supported solution  
-- Improve speed and quality of decisions  
-
----
-
-## ⚙️ Getting Started
+## Getting Started
 
 Clone the repository:
 ```bash
@@ -24,10 +16,10 @@ cd projectnaam
 
 ---
 
-## 🔀 Git Workflow
+## Git Workflow
 
 ### Branches
-- `main` → production (stable)
+- `main` → production branch
 - `staging` → testing environment
 - `feature/*` → development
 
@@ -64,7 +56,7 @@ git push origin feature/your-feature
 
 ---
 
-## 🔒 Branch Protection
+## Branch Protection
 
 ### `main`
 - Pull Request required  
@@ -73,47 +65,12 @@ git push origin feature/your-feature
 
 ### `staging`
 - Pull Request required  
-- Used for testing and validation  
+- Used for testing and validation
+- No direct pushes allowed  
 
 ---
 
-## 📁 Project Structure
-```
-/frontend
-/backend
-/docs
-/research
-```
 
----
-
-## 📋 Conventions
-- Use clear commit messages (`feat:`, `fix:`, `docs:`)  
-- Keep commits small and focused  
-- Always pull latest changes before starting work  
-- Use meaningful branch names (`feature/login`, `feature/search`)  
-
----
-
-## 🧪 Current Status
-- GitHub environment setup  
-- Workflow and collaboration rules defined  
-- Research phase in progress  
-
----
-
-## 🔮 Next Steps
-- Conduct interviews with CJG employees  
-- Analyze current workflow in detail  
-- Define requirements for AI solution  
-- Build prototype / proof of concept  
-
----
-
-## 👥 Team
-- Naam 1  
-- Naam 2  
-- Naam 3  
 
 ---
 
