@@ -52,10 +52,12 @@ function NAWModal({ zorgaanbieder, onClose }) {
           <div className="naw-section">
             <h3>Adresgegevens</h3>
             <div className="naw-grid">
-              <div className="naw-item full-width">
+              <div className="naw-item">
                 <label>Adres:</label>
                 <span>{zorgaanbieder.naw.adres}</span>
               </div>
+
+
               <div className="naw-item">
                 <label>Postcode:</label>
                 <span>{zorgaanbieder.naw.postcode}</span>
@@ -81,20 +83,6 @@ function NAWModal({ zorgaanbieder, onClose }) {
               <div className="naw-item">
                 <label>Contactpersoon:</label>
                 <span>{zorgaanbieder.naw.contactpersoon}</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="naw-section">
-            <h3>Bedrijfsgegevens</h3>
-            <div className="naw-grid">
-              <div className="naw-item">
-                <label>KVK-nummer:</label>
-                <span>{zorgaanbieder.naw.kvk}</span>
-              </div>
-              <div className="naw-item">
-                <label>BTW-nummer:</label>
-                <span>{zorgaanbieder.naw.btw}</span>
               </div>
             </div>
           </div>

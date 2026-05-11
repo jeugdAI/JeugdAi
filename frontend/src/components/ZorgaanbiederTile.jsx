@@ -26,7 +26,7 @@ function ZorgaanbiederTile({ zorgaanbieder, onClick }) {
     <div className="zorgaanbieder-tile" onClick={onClick}>
       <div className="tile-header">
         <h3 className="zorgaanbieder-naam">{zorgaanbieder.naam}</h3>
-        <span className="zorgaanbieder-type">{zorgaanbieder.status}</span>
+        {/* <span className="zorgaanbieder-type">{zorgaanbieder.status}</span> */}
       </div>
       
       <div className="tile-content">
