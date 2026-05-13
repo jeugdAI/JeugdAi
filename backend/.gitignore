@@ -76,3 +76,6 @@ PyCharm
 
 VS Code settings (optioneel)
 .vscode/settings.json
+.env
+db.sqlite3
+node_modules
