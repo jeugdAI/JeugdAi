@@ -1,121 +1,105 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useState, useMemo } from "react";
+import {
+  zorgaanbiedersData,
+  zorgTypes,
+  steden,
+  specialisaties,
+} from "./data/zorgaanbieders";
+import FilterPanel from "./components/FilterPanel";
+import ZorgaanbiederTile from "./components/ZorgaanbiederTile";
+import NAWModal from "./components/NAWModal";
+import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [filters, setFilters] = useState({
+    type: "",
+    stad: "",
+    specialisatie: "",
+    search: "",
+  });
+  const [selectedZorgaanbieder, setSelectedZorgaanbieder] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const filteredZorgaanbieders = useMemo(() => {
+    return zorgaanbiedersData.filter((zorgaanbieder) => {
+      const matchesType = !filters.type || zorgaanbieder.type === filters.type;
+      const matchesStad = !filters.stad || zorgaanbieder.stad === filters.stad;
+      const matchesSpecialisatie =
+        !filters.specialisatie ||
+        zorgaanbieder.specialisaties.includes(filters.specialisatie);
+      const matchesSearch =
+        !filters.search ||
+        zorgaanbieder.naam.toLowerCase().includes(filters.search.toLowerCase());
+
+      return (
+        matchesType && matchesStad && matchesSpecialisatie && matchesSearch
+      );
+    });
+  }, [filters]);
+
+  const handleFilterChange = (newFilters) => {
+    setFilters((prev) => ({ ...prev, ...newFilters }));
+  };
+
+  const handleTileClick = (zorgaanbieder) => {
+    setSelectedZorgaanbieder(zorgaanbieder);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedZorgaanbieder(null);
+  };
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <div className="dashboard">
+      <header className="dashboard-header">
+        <h1>Zorgaanbieders Dashboard</h1>
+        <p>Vind en beheer zorgaanbieders in de regio</p>
+      </header>
 
-      <div className="ticks"></div>
+      <div className="dashboard-content">
+        <aside className="filter-sidebar">
+          <FilterPanel
+            filters={filters}
+            onFilterChange={handleFilterChange}
+            zorgTypes={zorgTypes}
+            steden={steden}
+            specialisaties={specialisaties}
+          />
+        </aside>
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+        <main className="tiles-container">
+          <div className="tiles-header">
+            <h2>Zorgaanbieders ({filteredZorgaanbieders.length})</h2>
+          </div>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+          <div className="tiles-grid">
+            {filteredZorgaanbieders.map((zorgaanbieder) => (
+              <ZorgaanbiederTile
+                key={zorgaanbieder.id}
+                zorgaanbieder={zorgaanbieder}
+                onClick={() => handleTileClick(zorgaanbieder)}
+              />
+            ))}
+          </div>
+
+          {filteredZorgaanbieders.length === 0 && (
+            <div className="no-results">
+              <p>Geen zorgaanbieders gevonden met de geselecteerde filters.</p>
+            </div>
+          )}
+        </main>
+      </div>
+
+      {isModalOpen && selectedZorgaanbieder && (
+        <NAWModal
+          zorgaanbieder={selectedZorgaanbieder}
+          onClose={handleCloseModal}
+        />
+      )}
+    </div>
+  );
 }
 
-export default App
+export default App;

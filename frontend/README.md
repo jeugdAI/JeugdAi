@@ -1,87 +1,18 @@
-# JeugdAi Frontend
+# React + Vite
 
-Een moderne React + Vite frontend applicatie met Tailwind CSS en custom UI componenten.
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-## 🚀 Features
+Currently, two official plugins are available:
 
-- **React 19** - Laatste versie van React
-- **Vite** - Snelle development en build tool
-- **Tailwind CSS** - Utility-first CSS framework
-- **Custom UI Componenten** - Button, Card, Input, Textarea, Badge, Alert, Label
-- **Hot Module Replacement (HMR)** - Instant feedback in development
-- **React Compiler** - Geoptimaliseerde performance
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
-## 📦 Installatie
+## React Compiler
 
-```bash
-# Dependencies installeren
-npm install
+The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
 
-# Development server starten
-npm run dev
+Note: This will impact Vite dev & build performances.
 
-# Build voor productie
-npm run build
+## Expanding the ESLint configuration
 
-# Preview van build
-npm run preview
-```
-
-## 📁 Projectstructuur
-
-```
-src/
-├── components/
-│   └── ui/                # UI componenten library
-│       ├── button.jsx
-│       ├── card.jsx
-│       ├── input.jsx
-│       ├── textarea.jsx
-│       ├── label.jsx
-│       ├── badge.jsx
-│       ├── alert.jsx
-│       └── utils.js
-├── App.jsx               # Hoofd component
-├── main.jsx             # Entry point
-└── index.css            # Tailwind styles
-```
-
-## 🎨 UI Componenten
-
-### Button
-```jsx
-<Button variant="default">Default</Button>
-<Button variant="outline">Outline</Button>
-<Button variant="secondary">Secondary</Button>
-<Button variant="ghost">Ghost</Button>
-```
-
-### Card
-```jsx
-<Card>
-  <CardHeader>
-    <CardTitle>Title</CardTitle>
-    <CardDescription>Description</CardDescription>
-  </CardHeader>
-  <CardContent>Content</CardContent>
-</Card>
-```
-
-### Input
-```jsx
-<Input placeholder="Voer tekst in..." type="text" />
-<Input placeholder="je@email.com" type="email" />
-```
-
-## 🎯 Development
-
-- HMR is ingeschakeld - wijzigingen worden direct weergegeven
-- ESLint is geconfigureerd voor code quality
-- React Compiler is actief voor optimalisatie
-
-## 📦 Scripts
-
-- `npm run dev` - Start development server
-- `npm run build` - Build voor productie
-- `npm run lint` - Voer ESLint uit
-- `npm run preview` - Preview production build
+If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
