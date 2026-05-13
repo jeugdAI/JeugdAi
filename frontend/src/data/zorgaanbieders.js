@@ -17,8 +17,8 @@ export const zorgaanbiedersData = [
       email: "info@zonnehof.nl",
       contactpersoon: "Mevrouw J. Jansen",
       kvk: "12345678",
-      btw: "NL123456789B01"
-    }
+      btw: "NL123456789B01",
+    },
   },
   {
     id: 2,
@@ -38,8 +38,8 @@ export const zorgaanbiedersData = [
       email: "contact@thuishulpcapelle.nl",
       contactpersoon: "De heer P. de Vries",
       kvk: "23456789",
-      btw: "NL234567890B01"
-    }
+      btw: "NL234567890B01",
+    },
   },
   {
     id: 3,
@@ -59,8 +59,8 @@ export const zorgaanbiedersData = [
       email: "info@revalidatie-rotterdam.nl",
       contactpersoon: "Dr. A. Bakker",
       kvk: "34567890",
-      btw: "NL345678901B01"
-    }
+      btw: "NL345678901B01",
+    },
   },
   {
     id: 4,
@@ -80,8 +80,8 @@ export const zorgaanbiedersData = [
       email: "info@jeugdzorgholland.nl",
       contactpersoon: "Mevrouw L. Smit",
       kvk: "45678901",
-      btw: "NL456789012B01"
-    }
+      btw: "NL456789012B01",
+    },
   },
   {
     id: 5,
@@ -101,8 +101,8 @@ export const zorgaanbiedersData = [
       email: "praktijk@debrugggz.nl",
       contactpersoon: "Dr. R. Mulder",
       kvk: "56789012",
-      btw: "NL567890123B01"
-    }
+      btw: "NL567890123B01",
+    },
   },
   {
     id: 6,
@@ -122,8 +122,8 @@ export const zorgaanbiedersData = [
       email: "info@huisartswelzijn.nl",
       contactpersoon: "Dr. T. van der Berg",
       kvk: "67890123",
-      btw: "NL678901234B01"
-    }
+      btw: "NL678901234B01",
+    },
   },
   {
     id: 7,
@@ -143,8 +143,8 @@ export const zorgaanbiedersData = [
       email: "info@mondzorg-rotterdam.nl",
       contactpersoon: "Dr. E. Visser",
       kvk: "78901234",
-      btw: "NL789012345B01"
-    }
+      btw: "NL789012345B01",
+    },
   },
   {
     id: 8,
@@ -164,8 +164,8 @@ export const zorgaanbiedersData = [
       email: "service@apotheekdeservice.nl",
       contactpersoon: "Drs. F. de Jong",
       kvk: "89012345",
-      btw: "NL890123456B01"
-    }
+      btw: "NL890123456B01",
+    },
   },
   {
     id: 9,
@@ -185,8 +185,8 @@ export const zorgaanbiedersData = [
       email: "info@fysiocentrum.nl",
       contactpersoon: "Mevrouw G. van Dijk",
       kvk: "90123456",
-      btw: "NL901234567B01"
-    }
+      btw: "NL901234567B01",
+    },
   },
   {
     id: 10,
@@ -206,8 +206,8 @@ export const zorgaanbiedersData = [
       email: "info@diabeteszorgwestland.nl",
       contactpersoon: "Dr. H. de Wit",
       kvk: "01234567",
-      btw: "NL012345678B01"
-    }
+      btw: "NL012345678B01",
+    },
   },
   {
     id: 11,
@@ -227,8 +227,8 @@ export const zorgaanbiedersData = [
       email: "info@tandartsdelach.nl",
       contactpersoon: "Dr. I. Pietersen",
       kvk: "11234567",
-      btw: "NL112345678B01"
-    }
+      btw: "NL112345678B01",
+    },
   },
   {
     id: 12,
@@ -248,35 +248,31 @@ export const zorgaanbiedersData = [
       email: "info@praktijkherstel.nl",
       contactpersoon: "Dr. J. van Leeuwen",
       kvk: "12345678",
-      btw: "NL123456789B01"
-    }
-  }
+      btw: "NL123456789B01",
+    },
+  },
 ];
 
-export const zorgTypes = [
-  "Onbekend"
-];
+export const zorgTypes = ["Onbekend"];
 
 export const steden = [
   "Capelle aan den IJssel",
-  "Rotterdam", 
+  "Rotterdam",
   "Gouda",
   "Delft",
   "Schiedam",
-  "Naaldwijk"
+  "Naaldwijk",
 ];
 
-export const provincies = [
-  "Zuid-Holland"
-];
+export const provincies = ["Zuid-Holland"];
 
 export const specialisaties = [
   "dementiezorg",
-  "revalidatie", 
+  "revalidatie",
   "persoonlijke verzorging",
   "verpleging",
   "fysiotherapie",
-  "ergotherapie", 
+  "ergotherapie",
   "logopedie",
   "jeugdhulp",
   "gezinstherapie",
@@ -293,5 +289,5 @@ export const specialisaties = [
   "diabetesbegeleiding",
   "dieetadvies",
   "kindertandheelkunde",
-  "groepstherapie"
+  "groepstherapie",
 ];

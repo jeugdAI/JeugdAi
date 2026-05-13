@@ -1,46 +1,55 @@
-import { useState, useMemo } from 'react'
-import { zorgaanbiedersData, zorgTypes, steden, specialisaties } from './data/zorgaanbieders'
-import FilterPanel from './components/FilterPanel'
-import ZorgaanbiederTile from './components/ZorgaanbiederTile'
-import NAWModal from './components/NAWModal'
-import './App.css'
+import { useState, useMemo } from "react";
+import {
+  zorgaanbiedersData,
+  zorgTypes,
+  steden,
+  specialisaties,
+} from "./data/zorgaanbieders";
+import FilterPanel from "./components/FilterPanel";
+import ZorgaanbiederTile from "./components/ZorgaanbiederTile";
+import NAWModal from "./components/NAWModal";
+import "./App.css";
 
 function App() {
   const [filters, setFilters] = useState({
-    type: '',
-    stad: '',
-    specialisatie: '',
-    search: ''
-  })
-  const [selectedZorgaanbieder, setSelectedZorgaanbieder] = useState(null)
-  const [isModalOpen, setIsModalOpen] = useState(false)
+    type: "",
+    stad: "",
+    specialisatie: "",
+    search: "",
+  });
+  const [selectedZorgaanbieder, setSelectedZorgaanbieder] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const filteredZorgaanbieders = useMemo(() => {
-    return zorgaanbiedersData.filter(zorgaanbieder => {
-      const matchesType = !filters.type || zorgaanbieder.type === filters.type
-      const matchesStad = !filters.stad || zorgaanbieder.stad === filters.stad
-      const matchesSpecialisatie = !filters.specialisatie || 
-        zorgaanbieder.specialisaties.includes(filters.specialisatie)
-      const matchesSearch = !filters.search || 
-        zorgaanbieder.naam.toLowerCase().includes(filters.search.toLowerCase())
+    return zorgaanbiedersData.filter((zorgaanbieder) => {
+      const matchesType = !filters.type || zorgaanbieder.type === filters.type;
+      const matchesStad = !filters.stad || zorgaanbieder.stad === filters.stad;
+      const matchesSpecialisatie =
+        !filters.specialisatie ||
+        zorgaanbieder.specialisaties.includes(filters.specialisatie);
+      const matchesSearch =
+        !filters.search ||
+        zorgaanbieder.naam.toLowerCase().includes(filters.search.toLowerCase());
 
-      return matchesType && matchesStad && matchesSpecialisatie && matchesSearch
-    })
-  }, [filters])
+      return (
+        matchesType && matchesStad && matchesSpecialisatie && matchesSearch
+      );
+    });
+  }, [filters]);
 
   const handleFilterChange = (newFilters) => {
-    setFilters(prev => ({ ...prev, ...newFilters }))
-  }
+    setFilters((prev) => ({ ...prev, ...newFilters }));
+  };
 
   const handleTileClick = (zorgaanbieder) => {
-    setSelectedZorgaanbieder(zorgaanbieder)
-    setIsModalOpen(true)
-  }
+    setSelectedZorgaanbieder(zorgaanbieder);
+    setIsModalOpen(true);
+  };
 
   const handleCloseModal = () => {
-    setIsModalOpen(false)
-    setSelectedZorgaanbieder(null)
-  }
+    setIsModalOpen(false);
+    setSelectedZorgaanbieder(null);
+  };
 
   return (
     <div className="dashboard">
@@ -51,7 +60,7 @@ function App() {
 
       <div className="dashboard-content">
         <aside className="filter-sidebar">
-          <FilterPanel 
+          <FilterPanel
             filters={filters}
             onFilterChange={handleFilterChange}
             zorgTypes={zorgTypes}
@@ -64,9 +73,9 @@ function App() {
           <div className="tiles-header">
             <h2>Zorgaanbieders ({filteredZorgaanbieders.length})</h2>
           </div>
-          
+
           <div className="tiles-grid">
-            {filteredZorgaanbieders.map(zorgaanbieder => (
+            {filteredZorgaanbieders.map((zorgaanbieder) => (
               <ZorgaanbiederTile
                 key={zorgaanbieder.id}
                 zorgaanbieder={zorgaanbieder}
@@ -90,7 +99,7 @@ function App() {
         />
       )}
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

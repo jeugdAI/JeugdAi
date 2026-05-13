@@ -1,24 +1,24 @@
-import React, { useEffect } from 'react'
+import React, { useEffect } from "react";
 
 function NAWModal({ zorgaanbieder, onClose }) {
   const handleBackdropClick = (e) => {
     if (e.target === e.currentTarget) {
-      onClose()
+      onClose();
     }
-  }
+  };
 
   const handleKeyDown = (e) => {
-    if (e.key === 'Escape') {
-      onClose()
+    if (e.key === "Escape") {
+      onClose();
     }
-  }
+  };
 
   useEffect(() => {
-    document.addEventListener('keydown', handleKeyDown)
+    document.addEventListener("keydown", handleKeyDown);
     return () => {
-      document.removeEventListener('keydown', handleKeyDown)
-    }
-  }, [])
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
   return (
     <div className="modal-backdrop" onClick={handleBackdropClick}>
@@ -29,7 +29,7 @@ function NAWModal({ zorgaanbieder, onClose }) {
             ×
           </button>
         </div>
-        
+
         <div className="modal-body">
           <div className="naw-section">
             <h3>Bedrijfsinformatie</h3>
@@ -56,7 +56,6 @@ function NAWModal({ zorgaanbieder, onClose }) {
                 <label>Adres:</label>
                 <span>{zorgaanbieder.naw.adres}</span>
               </div>
-
 
               <div className="naw-item">
                 <label>Postcode:</label>
@@ -103,13 +102,11 @@ function NAWModal({ zorgaanbieder, onClose }) {
           <button className="secondary-btn" onClick={onClose}>
             Sluiten
           </button>
-          <button className="primary-btn">
-            Contact opnemen
-          </button>
+          <button className="primary-btn">Contact opnemen</button>
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default NAWModal
+export default NAWModal;
