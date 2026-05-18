@@ -38,9 +38,10 @@ body {
 }
 
 .dashboard {
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .dashboard-header {
@@ -74,9 +75,6 @@ body {
   background: var(--card-background);
   border-right: 1px solid var(--border-color);
   overflow-y: auto;
-  position: sticky;
-  top: 0;
-  height: calc(100vh - 120px);
 }
 
 .filter-panel {
@@ -442,7 +440,7 @@ body {
 }
 
 .specialisatie-badge {
-  background-color: var(--primary-color);
+  background-color: var(--success-color);
   color: white;
   padding: 0.375rem 0.75rem;
   border-radius: var(--radius-md);
@@ -479,11 +477,11 @@ body {
 }
 
 .secondary-btn {
-  background-color: var(--background-color);
-  color: var(--text-color);
+  background-color: var(--error-color);
+  color: white;
   border: 1px solid var(--border-color);
 }
 
 .secondary-btn:hover {
-  background-color: var(--border-color);
+  background-color: var(--primary-hover);
 }
