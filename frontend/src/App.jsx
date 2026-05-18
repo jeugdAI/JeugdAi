@@ -29,9 +29,7 @@ function App() {
     if (filters.specialisatie)
       params.append("specialisatie", filters.specialisatie);
 
-    fetch(
-      `http://localhost:8000/api/zorgaanbieders/?${params.toString()}`
-    )
+    fetch(`http://localhost:8000/api/zorgaanbieders/?${params.toString()}`)
       .then((res) => res.json())
       .then((data) => setZorgaanbieders(data))
       .catch((err) => console.error("Zorgaanbieders error:", err));
@@ -55,8 +53,8 @@ function App() {
     return [
       ...new Set(
         zorgaanbieders.flatMap((z) =>
-          (z.specialisaties || []).map((s) => s.name)
-        )
+          (z.specialisaties || []).map((s) => s.name),
+        ),
       ),
     ].sort();
   }, [zorgaanbieders]);
