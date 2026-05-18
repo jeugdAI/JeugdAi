@@ -1,42 +1,69 @@
-import { useState, useMemo } from "react";
-import {
-  zorgaanbiedersData,
-  zorgTypes,
-  steden,
-  specialisaties,
-} from "./data/zorgaanbieders";
+import { useState, useEffect, useMemo } from "react";
 import FilterPanel from "./components/FilterPanel";
 import ZorgaanbiederTile from "./components/ZorgaanbiederTile";
 import NAWModal from "./components/NAWModal";
 import "./App.css";
 
 function App() {
+  // STATE
   const [filters, setFilters] = useState({
-    type: "",
     stad: "",
     specialisatie: "",
     search: "",
   });
+
+  const [zorgaanbieders, setZorgaanbieders] = useState([]);
+  const [specialisaties, setSpecialisaties] = useState([]);
+
   const [selectedZorgaanbieder, setSelectedZorgaanbieder] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const filteredZorgaanbieders = useMemo(() => {
-    return zorgaanbiedersData.filter((zorgaanbieder) => {
-      const matchesType = !filters.type || zorgaanbieder.type === filters.type;
-      const matchesStad = !filters.stad || zorgaanbieder.stad === filters.stad;
-      const matchesSpecialisatie =
-        !filters.specialisatie ||
-        zorgaanbieder.specialisaties.includes(filters.specialisatie);
-      const matchesSearch =
-        !filters.search ||
-        zorgaanbieder.naam.toLowerCase().includes(filters.search.toLowerCase());
+  // ---------------------------------------
+  // API CALL (WITH BACKEND FILTERING)
+  // ---------------------------------------
+  useEffect(() => {
+    const params = new URLSearchParams();
 
-      return (
-        matchesType && matchesStad && matchesSpecialisatie && matchesSearch
-      );
-    });
+    if (filters.stad) params.append("stad", filters.stad);
+    if (filters.search) params.append("search", filters.search);
+    if (filters.specialisatie)
+      params.append("specialisatie", filters.specialisatie);
+
+    fetch(
+      `http://localhost:8000/api/zorgaanbieders/?${params.toString()}`
+    )
+      .then((res) => res.json())
+      .then((data) => setZorgaanbieders(data))
+      .catch((err) => console.error("Zorgaanbieders error:", err));
   }, [filters]);
 
+  // useEffect(() => {
+  //   fetch("http://localhost:8000/api/specialisaties/")
+  //     .then((res) => res.json())
+  //     .then((data) => setSpecialisaties(data))
+  //     .catch((err) => console.error("Specialisaties error:", err));
+  // }, []);
+
+  // ---------------------------------------
+  // DERIVED DATA (NO FILTERING HERE!)
+  // ---------------------------------------
+  const steden = useMemo(() => {
+    return [...new Set(zorgaanbieders.map((z) => z.city))].sort();
+  }, [zorgaanbieders]);
+
+  const specialisatieOptions = useMemo(() => {
+    return [
+      ...new Set(
+        zorgaanbieders.flatMap((z) =>
+          (z.specialisaties || []).map((s) => s.name)
+        )
+      ),
+    ].sort();
+  }, [zorgaanbieders]);
+
+  // ---------------------------------------
+  // HANDLERS
+  // ---------------------------------------
   const handleFilterChange = (newFilters) => {
     setFilters((prev) => ({ ...prev, ...newFilters }));
   };
@@ -51,6 +78,9 @@ function App() {
     setSelectedZorgaanbieder(null);
   };
 
+  // ---------------------------------------
+  // UI
+  // ---------------------------------------
   return (
     <div className="dashboard">
       <header className="dashboard-header">
@@ -63,19 +93,18 @@ function App() {
           <FilterPanel
             filters={filters}
             onFilterChange={handleFilterChange}
-            zorgTypes={zorgTypes}
             steden={steden}
-            specialisaties={specialisaties}
+            specialisaties={specialisatieOptions}
           />
         </aside>
 
         <main className="tiles-container">
           <div className="tiles-header">
-            <h2>Zorgaanbieders ({filteredZorgaanbieders.length})</h2>
+            <h2>Zorgaanbieders ({zorgaanbieders.length})</h2>
           </div>
 
           <div className="tiles-grid">
-            {filteredZorgaanbieders.map((zorgaanbieder) => (
+            {zorgaanbieders.map((zorgaanbieder) => (
               <ZorgaanbiederTile
                 key={zorgaanbieder.id}
                 zorgaanbieder={zorgaanbieder}
@@ -84,9 +113,9 @@ function App() {
             ))}
           </div>
 
-          {filteredZorgaanbieders.length === 0 && (
+          {zorgaanbieders.length === 0 && (
             <div className="no-results">
-              <p>Geen zorgaanbieders gevonden met de geselecteerde filters.</p>
+              <p>Geen zorgaanbieders gevonden.</p>
             </div>
           )}
         </main>

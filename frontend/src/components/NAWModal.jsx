@@ -34,19 +34,29 @@ function NAWModal({ zorgaanbieder, onClose }) {
           <div className="naw-section">
             <h3>Bedrijfsinformatie</h3>
             <div className="naw-grid">
-              <div className="naw-item">
-                <label>Naam:</label>
-                <span>{zorgaanbieder.naam}</span>
+                <div className="naw-item">
+                  <label>Naam:</label>
+                  <span>{zorgaanbieder.naam ?? zorgaanbieder.name ?? "-"}</span>
+                </div>
+                <div className="naw-item">
+                  <label>Email:</label>
+                  {zorgaanbieder.naw?.email || zorgaanbieder.email ? (
+                    <a href={`mailto:${zorgaanbieder.naw?.email ?? zorgaanbieder.email}`}>
+                      {zorgaanbieder.naw?.email ?? zorgaanbieder.email}
+                    </a>
+                  ) : (
+                    <span>-</span>
+                  )}
+                </div>
+                {/* <div className="naw-item">
+                  <label>Type:</label>
+                  <span>{zorgaanbieder.type ?? "-"}</span>
+                </div>
+                <div className="naw-item">
+                  <label>Capaciteit:</label>
+                  <span>{zorgaanbieder.capaciteit ?? zorgaanbieder.capacity ?? "-"} plaatsen</span>
+                </div> */}
               </div>
-              <div className="naw-item">
-                <label>Type:</label>
-                <span>{zorgaanbieder.type}</span>
-              </div>
-              <div className="naw-item">
-                <label>Capaciteit:</label>
-                <span>{zorgaanbieder.capaciteit} plaatsen</span>
-              </div>
-            </div>
           </div>
 
           <div className="naw-section">
@@ -54,16 +64,16 @@ function NAWModal({ zorgaanbieder, onClose }) {
             <div className="naw-grid">
               <div className="naw-item">
                 <label>Adres:</label>
-                <span>{zorgaanbieder.naw.adres}</span>
+                <span>{zorgaanbieder.naw?.adres ?? zorgaanbieder.address ?? "-"}</span>
               </div>
 
               <div className="naw-item">
                 <label>Postcode:</label>
-                <span>{zorgaanbieder.naw.postcode}</span>
+                <span>{zorgaanbieder.naw?.postcode ?? zorgaanbieder.postcode ?? "-"}</span>
               </div>
               <div className="naw-item">
                 <label>Stad:</label>
-                <span>{zorgaanbieder.naw.stad}</span>
+                <span>{zorgaanbieder.naw?.stad ?? zorgaanbieder.city ?? zorgaanbieder.stad ?? "-"}</span>
               </div>
             </div>
           </div>
@@ -72,29 +82,37 @@ function NAWModal({ zorgaanbieder, onClose }) {
             <h3>Contactgegevens</h3>
             <div className="naw-grid">
               <div className="naw-item">
-                <label>Telefoon:</label>
-                <span>{zorgaanbieder.naw.telefoon}</span>
+                <label>Telefoon 1:</label>
+                <span>{zorgaanbieder.naw?.telefoon ?? zorgaanbieder.phone_number_1 ?? zorgaanbieder.phone ?? "-"}</span>
               </div>
               <div className="naw-item">
+                <label>Telefoon 2:</label>
+                <span>{zorgaanbieder.naw?.telefoon ?? zorgaanbieder.phone_number_2 ?? zorgaanbieder.phone ?? "-"}</span>
+              </div>
+              <div className="naw-item">
+                <label>Telefoon 3:</label>
+                <span>{zorgaanbieder.naw?.telefoon ?? zorgaanbieder.phone_number_3 ?? zorgaanbieder.phone ?? "-"}</span>
+              </div>
+              {/* <div className="naw-item">
                 <label>Email:</label>
-                <span>{zorgaanbieder.naw.email}</span>
-              </div>
-              <div className="naw-item">
+                <span>{zorgaanbieder.naw?.email ?? zorgaanbieder.email ?? "-"}</span>
+              </div> */}
+              {/* <div className="naw-item">
                 <label>Contactpersoon:</label>
-                <span>{zorgaanbieder.naw.contactpersoon}</span>
-              </div>
+                <span>{zorgaanbieder.naw?.contactpersoon ?? zorgaanbieder.contact_person ?? "-"}</span>
+              </div> */}
             </div>
           </div>
 
           <div className="naw-section">
             <h3>Specialisaties</h3>
             <div className="specialisaties-list">
-              {zorgaanbieder.specialisaties.map((spec, index) => (
-                <span key={index} className="specialisatie-badge">
-                  {spec}
-                </span>
-              ))}
-            </div>
+                {(zorgaanbieder.specialisaties || []).map((spec) => (
+                  <span key={spec.id ?? spec.name} className="specialisatie-badge">
+                    {spec.name ?? spec}
+                  </span>
+                ))}
+              </div>
           </div>
         </div>
 
@@ -102,7 +120,7 @@ function NAWModal({ zorgaanbieder, onClose }) {
           <button className="secondary-btn" onClick={onClose}>
             Sluiten
           </button>
-          <button className="primary-btn">Contact opnemen</button>
+          {/* <button className="primary-btn">Contact opnemen</button> */}
         </div>
       </div>
     </div>
