@@ -51,13 +51,13 @@ body {
 .dashboard-header {
   background: linear-gradient(90deg, var(--cjg-groen), var(--cjg-blauw));
   border-bottom: 1px solid var(--border-color);
-  padding: 1.5rem 2rem;
+  padding: 0.7rem 2rem;
   box-shadow: var(--shadow-sm);
 }
 
 .dashboard-header h1 {
   margin: 0 0 0.5rem 0;
-  font-size: 1.875rem;
+  font-size: 2rem;
   font-weight: 700;
   color: var(--text-color-white);
 }
@@ -65,8 +65,8 @@ body {
 .dashboard-header p {
   margin: 0;
   color: var(--cjg-paars);
-  font-size: 1rem;
-  font-weight: bold
+  font-size: 1.1rem;
+  font-weight: bold;
 }
 
 .dashboard-content {
@@ -108,13 +108,13 @@ body {
   border-radius: var(--radius-sm);
   font-size: 0.875rem;
   cursor: pointer;
-  transition: all 0.15s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 
 .clear-filters-btn:hover {
-  background-color: var(--background-color);
+  background-color: var(--cjg-paars);
   border-color: var(--primary-color);
-  color: var(--primary-color);
+  color: var(--text-color-white);
 }
 
 .filter-group {
@@ -194,9 +194,9 @@ body {
 }
 
 .zorgaanbieder-tile:hover {
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-lg);
   transform: translateY(-2px);
-  border-color: var(--primary-color);
+  border-color: var(--cjg-groen);
 }
 
 .tile-header {
@@ -484,11 +484,10 @@ body {
 }
 
 .secondary-btn {
-  background-color: var(--error-color);
+  background-color: var(--cjg-paars);
   color: white;
   border: 1px solid var(--border-color);
 }
-
 .secondary-btn:hover {
-  background-color: var(--primary-hover);
+  border-color: var(--primary-hover);
 }
