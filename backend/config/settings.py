@@ -18,6 +18,7 @@ CORS_ALLOW_CREDENTIALS = True
 
 # Application definition
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -109,4 +110,29 @@ USE_TZ = True
 # Static files
 STATIC_URL = 'static/'
 
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+#JAZZMIN setting zijn hier
+JAZZMIN_SETTINGS = {
+    "custom_css": "css/admin.css",
+    "site_title": "JeugdAI Admin",
+    "site_header": "JeugdAI Admin",
+    "site_brand": "CJG Admin",
+    "welcome_sign": "Welkom bij het zorgaanbieers Adminpaneel",
+    "site_icon": "img/Logo-CJG.png",
+    "site_logo": "img/Logo-CJG.png",
+    # "topmenu_links": [
+    #     {"name": "Zorgaanbieders", 
+    #      "url": "http://127.0.0.1:8000/admin/api/zorgaanbieder/", 
+    #      "permissions": ["api"]}
+    #      ], IS DIT WEL NODIG GEZIEN DE SIDEBAR ALLES AL HEEFT
+    "order_with_respect_to": [
+        "api",
+        "auth",
+        ],
+    "copyright": ". Ontwikkeld als project van Hogeschool Utrecht.",
+}

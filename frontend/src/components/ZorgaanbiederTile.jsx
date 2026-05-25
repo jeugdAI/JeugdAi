@@ -54,15 +54,15 @@ function ZorgaanbiederTile({ zorgaanbieder, onClick }) {
           <span className="rating-number">{zorgaanbieder.rating}</span>
         </div> */}
 
-        <div className="specialisaties">
-          {zorgaanbieder.specialisaties.slice(0, 2).map((spec) => (
-            <span key={spec.id ?? spec.name} className="specialisatie-tag">
-              {spec.name ?? spec}
+        <div className="behandelingen">
+          {zorgaanbieder.behandelingen.slice(0, 2).map((behandeling) => (
+            <span key={behandeling.id ?? behandeling.name} className="behandeling-tag">
+              {behandeling.name ?? behandeling}
             </span>
           ))}
-          {zorgaanbieder.specialisaties.length > 2 && (
-            <span className="specialisatie-tag more">
-              +{zorgaanbieder.specialisaties.length - 2}
+          {zorgaanbieder.behandelingen.length > 2 && (
+            <span className="behandeling-tag more">
+              +{zorgaanbieder.behandelingen.length - 2}
             </span>
           )}
         </div>

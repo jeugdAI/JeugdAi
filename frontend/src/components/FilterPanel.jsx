@@ -1,6 +1,6 @@
 import React from "react";
 
-function FilterPanel({ filters, onFilterChange, steden, specialisaties }) {
+function FilterPanel({ filters, onFilterChange, steden, behandelingen }) {
   const handleInputChange = (field, value) => {
     onFilterChange({ [field]: value });
   };
@@ -8,7 +8,7 @@ function FilterPanel({ filters, onFilterChange, steden, specialisaties }) {
   const clearFilters = () => {
     onFilterChange({
       stad: "",
-      specialisatie: "",
+      behandeling: "",
       search: "",
     });
   };
@@ -55,20 +55,20 @@ function FilterPanel({ filters, onFilterChange, steden, specialisaties }) {
         </select>
       </div>
 
-      {/* SPECIALISATIES */}
+      {/* BEHANDELINGEN */}
       <div className="filter-group">
-        <label htmlFor="specialisatie">Specialisatie</label>
+        <label htmlFor="behandeling">Behandeling</label>
         <select
-          id="specialisatie"
-          value={filters.specialisatie || ""}
-          onChange={(e) => handleInputChange("specialisatie", e.target.value)}
+          id="behandeling"
+          value={filters.behandeling || ""}
+          onChange={(e) => handleInputChange("behandeling", e.target.value)}
           className="filter-select"
         >
-          <option value="">Alle specialisaties</option>
+          <option value="">Alle behandelingen</option>
 
-          {(specialisaties || []).map((spec, index) => (
-            <option key={index} value={spec}>
-              {spec.charAt(0).toUpperCase() + spec.slice(1)}
+          {(behandelingen || []).map((behandeling, index) => (
+            <option key={index} value={behandeling}>
+              {behandeling.charAt(0).toUpperCase() + behandeling.slice(1)}
             </option>
           ))}
         </select>

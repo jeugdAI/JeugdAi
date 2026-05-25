@@ -1,0 +1,20 @@
+/* custom_admin.css voor admin panele */
+
+.app-content-header {
+    background-color: #cf16c0 !important;
+    margin-bottom: 1rem;
+}
+
+/*hide de shit edit user taak in de sidebar */
+.user-panel.d-flex {
+    display: none !important;
+}
+
+/*hide de recent actions*/
+.dashboard .col-lg-3 {
+    display: none;
+}
+.dashboard .col-lg-9 {
+    flex: 0 0 100%;
+    max-width: 100%;
+}
