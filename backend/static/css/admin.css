@@ -48,6 +48,10 @@
 .float-sm-end {
     display: none !important;
 }
+.login-page.bg-body-secondary.app-loaded{
+    background: linear-gradient(90deg, var(--cjg-groen), var(--cjg-blauw));
+}
+
 /* .sidebar-brand{
     background: linear-gradient(90deg, var(--cjg-groen), var(--cjg-blauw));
 } */
