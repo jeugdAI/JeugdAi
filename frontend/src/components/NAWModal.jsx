@@ -131,14 +131,14 @@ function NAWModal({ zorgaanbieder, onClose }) {
           </div>
 
           <div className="naw-section">
-            <h3>Specialisaties</h3>
-            <div className="specialisaties-list">
-              {(zorgaanbieder.specialisaties || []).map((spec) => (
+            <h3>Behandelingen</h3>
+            <div className="behandelingen-list">
+              {(zorgaanbieder.behandelingen || []).map((behandeling) => (
                 <span
-                  key={spec.id ?? spec.name}
-                  className="specialisatie-badge"
+                  key={behandeling.id ?? behandeling.name}
+                  className="behandeling-badge"
                 >
-                  {spec.name ?? spec}
+                  {behandeling.name ?? behandeling}
                 </span>
               ))}
             </div>

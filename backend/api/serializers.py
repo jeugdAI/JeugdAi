@@ -1,14 +1,14 @@
 from rest_framework import serializers
-from .models import Zorgaanbieder, Specialisatie
+from .models import Zorgaanbieder, Behandeling
 
-class SpecialisatieSerializer(serializers.ModelSerializer):
+class BehandelingSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Specialisatie
+        model = Behandeling
         fields = ["id", "name"]
 
 
 class ZorgaanbiederSerializer(serializers.ModelSerializer):
-    specialisaties = SpecialisatieSerializer(many=True, read_only=True)
+    behandelingen = BehandelingSerializer(many=True, read_only=True)
 
     class Meta:
         model = Zorgaanbieder
@@ -22,5 +22,5 @@ class ZorgaanbiederSerializer(serializers.ModelSerializer):
             "phone_number_3",
             "postcode",
             "city",
-            "specialisaties",
+            "behandelingen",
         ]

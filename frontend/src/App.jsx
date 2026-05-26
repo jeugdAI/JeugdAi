@@ -8,12 +8,12 @@ function App() {
   // STATE
   const [filters, setFilters] = useState({
     stad: "",
-    specialisatie: "",
+    behandeling: "",
     search: "",
   });
 
   const [zorgaanbieders, setZorgaanbieders] = useState([]);
-  const [specialisaties, setSpecialisaties] = useState([]);
+  const [behandelingen, setBehandelingen] = useState([]);
 
   const [selectedZorgaanbieder, setSelectedZorgaanbieder] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -26,8 +26,8 @@ function App() {
 
     if (filters.stad) params.append("stad", filters.stad);
     if (filters.search) params.append("search", filters.search);
-    if (filters.specialisatie)
-      params.append("specialisatie", filters.specialisatie);
+    if (filters.behandeling)
+      params.append("behandeling", filters.behandeling);
 
     fetch(`http://localhost:8000/api/zorgaanbieders/?${params.toString()}`)
       .then((res) => res.json())
@@ -49,11 +49,11 @@ function App() {
     return [...new Set(zorgaanbieders.map((z) => z.city))].sort();
   }, [zorgaanbieders]);
 
-  const specialisatieOptions = useMemo(() => {
+  const behandelingOptions = useMemo(() => {
     return [
       ...new Set(
         zorgaanbieders.flatMap((z) =>
-          (z.specialisaties || []).map((s) => s.name),
+          (z.behandelingen || []).map((b) => b.name),
         ),
       ),
     ].sort();
@@ -92,7 +92,7 @@ function App() {
             filters={filters}
             onFilterChange={handleFilterChange}
             steden={steden}
-            specialisaties={specialisatieOptions}
+            behandelingen={behandelingOptions}
           />
         </aside>
 
