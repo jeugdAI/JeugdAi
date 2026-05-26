@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Zorgaanbieder, Behandeling
+from .models import Zorgaanbieder, Behandeling, Product
 
 @admin.register(Zorgaanbieder)
 class ZorgaanbiederAdmin(admin.ModelAdmin):
@@ -11,3 +11,8 @@ class ZorgaanbiederAdmin(admin.ModelAdmin):
 class BehandelingAdmin(admin.ModelAdmin):
     list_display = ('name',)
     search_fields = ('name',)
+
+@admin.register(Product)
+class ProductAdmin(admin.ModelAdmin):
+    list_display = ('name', 'code')
+    search_fields = ('name', 'code')

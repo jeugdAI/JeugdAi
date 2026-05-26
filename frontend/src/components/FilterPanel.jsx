@@ -1,6 +1,6 @@
 import React from "react";
 
-function FilterPanel({ filters, onFilterChange, steden, behandelingen }) {
+function FilterPanel({ filters, onFilterChange, steden, producten, behandelingen }) {
   const handleInputChange = (field, value) => {
     onFilterChange({ [field]: value });
   };
@@ -9,6 +9,7 @@ function FilterPanel({ filters, onFilterChange, steden, behandelingen }) {
     onFilterChange({
       stad: "",
       behandeling: "",
+      product: "",
       search: "",
     });
   };
@@ -69,6 +70,25 @@ function FilterPanel({ filters, onFilterChange, steden, behandelingen }) {
           {(behandelingen || []).map((behandeling, index) => (
             <option key={index} value={behandeling}>
               {behandeling.charAt(0).toUpperCase() + behandeling.slice(1)}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* PRODUCTEN */}
+      <div className="filter-group">
+        <label htmlFor="product">Product</label>
+        <select
+          id="product"
+          value={filters.product || ""}
+          onChange={(e) => handleInputChange("product", e.target.value)}
+          className="filter-select"
+        >
+          <option value="">Alle producten</option>
+
+          {(producten || []).map((product, index) => (
+            <option key={index} value={product}>
+              {product.charAt(0).toUpperCase() + product.slice(1)}
             </option>
           ))}
         </select>

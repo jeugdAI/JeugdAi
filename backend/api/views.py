@@ -2,8 +2,8 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 
-from .models import Zorgaanbieder, Behandeling
-from .serializers import ZorgaanbiederSerializer, BehandelingSerializer
+from .models import Zorgaanbieder, Behandeling, Product
+from .serializers import ZorgaanbiederSerializer, BehandelingSerializer, ProductSerializer
 
 
 # --------------------------------------------
@@ -15,6 +15,7 @@ def api_root(request):
         "endpoints": {
             "zorgaanbieders": "/api/zorgaanbieders/",
             "behandelingen": "/api/behandelingen/",
+            "producten": "/api/producten/",
         },
         "status": "running"
     })
@@ -27,7 +28,7 @@ def api_root(request):
 @require_http_methods(["GET"])
 def zorgaanbieders_list(request):
 
-    queryset = Zorgaanbieder.objects.prefetch_related("behandelingen").all()
+    queryset = Zorgaanbieder.objects.prefetch_related("behandelingen", "producten").all()
 
     # ----------------------------------------
     # FILTER: stad
@@ -52,6 +53,15 @@ def zorgaanbieders_list(request):
             behandelingen__name=behandeling
         ).distinct()
 
+    # ----------------------------------------
+    # FILTER: Product (M2M)
+    # ----------------------------------------
+    product = request.GET.get("product")
+    if product:
+        queryset = queryset.filter(
+            producten__name=product
+        ).distinct()
+
     serializer = ZorgaanbiederSerializer(queryset, many=True)
 
     return JsonResponse(serializer.data, safe=False)
@@ -66,5 +76,18 @@ def behandelingen_list(request):
 
     behandelingen = Behandeling.objects.all()
     serializer = BehandelingSerializer(behandelingen, many=True)
+
+    return JsonResponse(serializer.data, safe=False)
+
+
+# --------------------------------------------
+# Producten komt hier
+# --------------------------------------------
+@csrf_exempt
+@require_http_methods(["GET"])
+def producten_list(request):
+
+    producten = Product.objects.all()
+    serializer = ProductSerializer(producten, many=True)
 
     return JsonResponse(serializer.data, safe=False)

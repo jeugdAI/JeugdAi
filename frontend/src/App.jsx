@@ -9,14 +9,27 @@ function App() {
   const [filters, setFilters] = useState({
     stad: "",
     behandeling: "",
+    product: "",
     search: "",
   });
 
+  const [allZorgaanbieders, setAllZorgaanbieders] = useState([]);
   const [zorgaanbieders, setZorgaanbieders] = useState([]);
   const [behandelingen, setBehandelingen] = useState([]);
+  const [producten, setProducten] = useState([]);
 
   const [selectedZorgaanbieder, setSelectedZorgaanbieder] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // ---------------------------------------
+  // Alle DATA (NO FILTERING)
+  // ---------------------------------------
+  useEffect(() => {
+    fetch("http://localhost:8000/api/zorgaanbieders/")
+      .then((res) => res.json())
+      .then((data) => setAllZorgaanbieders(data))
+      .catch((err) => console.error("Master data error:", err));
+  }, []);
 
   // ---------------------------------------
   // API CALL (WITH BACKEND FILTERING)
@@ -28,6 +41,8 @@ function App() {
     if (filters.search) params.append("search", filters.search);
     if (filters.behandeling)
       params.append("behandeling", filters.behandeling);
+    if (filters.product)
+      params.append("product", filters.product);
 
     fetch(`http://localhost:8000/api/zorgaanbieders/?${params.toString()}`)
       .then((res) => res.json())
@@ -35,29 +50,49 @@ function App() {
       .catch((err) => console.error("Zorgaanbieders error:", err));
   }, [filters]);
 
-  // useEffect(() => {
-  //   fetch("http://localhost:8000/api/specialisaties/")
-  //     .then((res) => res.json())
-  //     .then((data) => setSpecialisaties(data))
-  //     .catch((err) => console.error("Specialisaties error:", err));
-  // }, []);
+  // ---------------------------------------
+  // PRODUCTS API
+  // ---------------------------------------
+  useEffect(() => {
+    fetch("http://localhost:8000/api/producten/")
+      .then((res) => res.json())
+      .then((data) => setProducten(data))
+      .catch((err) => console.error("Producten error:", err));
+  }, []);
+
+  useEffect(() => {
+    fetch("http://localhost:8000/api/specialisaties/")
+      .then((res) => res.json())
+      .then((data) => setSpecialisaties(data))
+      .catch((err) => console.error("Specialisaties error:", err));
+  }, []);
 
   // ---------------------------------------
   // DERIVED DATA (NO FILTERING HERE!)
   // ---------------------------------------
   const steden = useMemo(() => {
-    return [...new Set(zorgaanbieders.map((z) => z.city))].sort();
-  }, [zorgaanbieders]);
+    return [...new Set(allZorgaanbieders.map((z) => z.city))].sort();
+  }, [allZorgaanbieders]);
 
   const behandelingOptions = useMemo(() => {
     return [
       ...new Set(
-        zorgaanbieders.flatMap((z) =>
+        allZorgaanbieders.flatMap((z) =>
           (z.behandelingen || []).map((b) => b.name),
         ),
       ),
     ].sort();
-  }, [zorgaanbieders]);
+  }, [allZorgaanbieders]);
+
+  const productOptions = useMemo(() => {
+    return [
+      ...new Set(
+        allZorgaanbieders.flatMap((z) =>
+          (z.producten || []).map((p) => p.name),
+        ),
+      ),
+    ].sort();
+  }, [allZorgaanbieders]);
 
   // ---------------------------------------
   // HANDLERS
@@ -93,6 +128,7 @@ function App() {
             onFilterChange={handleFilterChange}
             steden={steden}
             behandelingen={behandelingOptions}
+            producten={productOptions}
           />
         </aside>
 

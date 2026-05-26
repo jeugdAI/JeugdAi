@@ -50,14 +50,6 @@ function NAWModal({ zorgaanbieder, onClose }) {
                   <span>-</span>
                 )}
               </div>
-              {/* <div className="naw-item">
-                  <label>Type:</label>
-                  <span>{zorgaanbieder.type ?? "-"}</span>
-                </div>
-                <div className="naw-item">
-                  <label>Capaciteit:</label>
-                  <span>{zorgaanbieder.capaciteit ?? zorgaanbieder.capacity ?? "-"} plaatsen</span>
-                </div> */}
             </div>
           </div>
 
@@ -119,14 +111,20 @@ function NAWModal({ zorgaanbieder, onClose }) {
                     "-"}
                 </span>
               </div>
-              {/* <div className="naw-item">
-                <label>Email:</label>
-                <span>{zorgaanbieder.naw?.email ?? zorgaanbieder.email ?? "-"}</span>
-              </div> */}
-              {/* <div className="naw-item">
-                <label>Contactpersoon:</label>
-                <span>{zorgaanbieder.naw?.contactpersoon ?? zorgaanbieder.contact_person ?? "-"}</span>
-              </div> */}
+            </div>
+          </div>
+
+          <div className="naw-section">
+            <h3>Producten</h3>
+            <div className="producten-list">
+              {(zorgaanbieder.producten || []).map((product) => (
+                <span
+                  key={product.id ?? product.name}
+                  className="product-badge"
+                >
+                  {product.name ?? product}
+                </span>
+              ))}
             </div>
           </div>
 
