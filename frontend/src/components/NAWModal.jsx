@@ -115,6 +115,17 @@ function NAWModal({ zorgaanbieder, onClose }) {
           </div>
 
           <div className="naw-section">
+            <h3>Opmerkingen</h3>
+            <div className="naw-grid">
+              <div className="naw-item">
+                <span>
+                  {zorgaanbieder.naw?.notes ?? zorgaanbieder.notes ?? "-"}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div className="naw-section">
             <h3>Producten</h3>
             <div className="producten-list">
               {(zorgaanbieder.producten || []).map((product) => (

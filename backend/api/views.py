@@ -38,6 +38,13 @@ def zorgaanbieders_list(request):
         queryset = queryset.filter(city=stad)
 
     # ----------------------------------------
+    # FILTER: regio
+    # ----------------------------------------
+    regio = request.GET.getlist("regio_indeling")
+    if regio:
+        queryset = queryset.filter(regio_indeling__in=regio)
+
+    # ----------------------------------------
     # FILTER: search (naam)
     # ----------------------------------------
     search = request.GET.get("search")

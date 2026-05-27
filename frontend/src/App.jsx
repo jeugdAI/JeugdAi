@@ -3,6 +3,7 @@ import FilterPanel from "./components/FilterPanel";
 import ZorgaanbiederTile from "./components/ZorgaanbiederTile";
 import NAWModal from "./components/NAWModal";
 import "./App.css";
+import Logo_big from "/Logo_big.png";
 
 function App() {
   // STATE
@@ -11,6 +12,7 @@ function App() {
     behandeling: "",
     product: "",
     search: "",
+    regio_indeling: [],
   });
 
   const [allZorgaanbieders, setAllZorgaanbieders] = useState([]);
@@ -36,7 +38,9 @@ function App() {
   // ---------------------------------------
   useEffect(() => {
     const params = new URLSearchParams();
-
+    if (filters.regio_indeling)      filters.regio_indeling.forEach((r) =>
+        params.append("regio_indeling", r),
+      );
     if (filters.stad) params.append("stad", filters.stad);
     if (filters.search) params.append("search", filters.search);
     if (filters.behandeling)
@@ -117,8 +121,12 @@ function App() {
   return (
     <div className="dashboard">
       <header className="dashboard-header">
-        <h1>Zorgaanbieders Dashboard</h1>
-        <p>Vind en beheer zorgaanbieders in de regio</p>
+        <img src={Logo_big} alt="Logo CJG" />
+        <div className="header-text">
+          <h1>Zorgaanbieders Dashboard</h1>
+          <p>Vind en beheer zorgaanbieders in de regio</p>
+        </div>
+          <div className="header-spacer"></div>
       </header>
 
       <div className="dashboard-content">

@@ -49,14 +49,32 @@ body {
 }
 
 .dashboard-header {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+
   background: linear-gradient(90deg, var(--cjg-groen), var(--cjg-blauw));
   border-bottom: 1px solid var(--border-color);
   padding: 0.7rem 2rem;
   box-shadow: var(--shadow-sm);
 }
 
+/* LOGO links */
+.dashboard-header img {
+  height: 75px;
+  width: auto;
+  justify-self: start;
+}
+.header-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  justify-self: center;
+}
+
 .dashboard-header h1 {
-  margin: 0 0 0.5rem 0;
+  margin: 0;
   font-size: 2rem;
   font-weight: 700;
   color: var(--text-color-white);
@@ -67,6 +85,11 @@ body {
   color: var(--text-color-white);
   font-size: 1.1rem;
   font-weight: bold;
+}
+
+/* rechter kant (balans) */
+.header-spacer {
+  justify-self: end;
 }
 
 .dashboard-content {

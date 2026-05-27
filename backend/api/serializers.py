@@ -29,4 +29,7 @@ class ZorgaanbiederSerializer(serializers.ModelSerializer):
             "behandelingen",
             "producten",
             "notes",
+            "notes_owner",
+            "notes_created_at",
+            "regio_indeling"
         ]

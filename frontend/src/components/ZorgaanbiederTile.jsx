@@ -3,6 +3,11 @@ import { MapPinIcon } from "@heroicons/react/24/outline";
 
 function ZorgaanbiederTile({ zorgaanbieder, onClick }) {
 
+  const REGIO_LABELS = {
+  lokaal: "Lokaal",
+  regionaal: "Regionaal",
+};
+
   return (
     <div className="zorgaanbieder-tile" onClick={onClick}>
       <div className="tile-header">
@@ -11,8 +16,8 @@ function ZorgaanbiederTile({ zorgaanbieder, onClick }) {
 
       <div className="tile-content">
         <div className="location-info">
-          <div className="location-text">Plaats:</div>
-          <span className="stad">{zorgaanbieder.city}</span>
+          <div className="location-text">Regio Indeling:</div>
+          <span className="stad">{REGIO_LABELS[zorgaanbieder.regio_indeling] || zorgaanbieder.regio_indeling}</span>
         </div>
 
         <div className="producten">

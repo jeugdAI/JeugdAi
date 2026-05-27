@@ -11,9 +11,10 @@ function FilterPanel({ filters, onFilterChange, steden, producten, behandelingen
       behandeling: "",
       product: "",
       search: "",
+      regio_indeling: ""
     });
   };
-
+  console.table(filters);
   return (
     <div className="filter-panel">
       {/* HEADER */}
@@ -36,6 +37,44 @@ function FilterPanel({ filters, onFilterChange, steden, producten, behandelingen
           className="filter-input"
         />
       </div>
+
+      {/* REGIO INDDELING */}
+      <div className="filter-group">
+        <label>Regio Indeling</label>
+        
+        {["lokaal", "regionaal"].map((value) => (
+        <label
+          key={value}
+          style={{
+           display: "flex",
+           alignItems: "center",
+           gap: "10px",
+           width: "100%"
+          }}
+        >
+          {value.charAt(0).toUpperCase() + value.slice(1)}
+        
+          <input
+            type="checkbox"
+            value={value}
+            checked={(filters.regio_indeling || []).includes(value)}
+            onChange={(e) => {
+              const checked = e.target.checked;
+              let updated = filters.regio_indeling || [];
+            
+              if (checked) {
+                updated = [...updated, value];
+              } else {
+                updated = updated.filter((v) => v !== value);
+              }
+            
+              handleInputChange("regio_indeling", updated);
+            }}
+          />
+        </label>
+      ))}
+      </div>
+
 
       {/* STAD */}
       <div className="filter-group">
