@@ -38,9 +38,28 @@ function FilterPanel({ filters, onFilterChange, steden, producten, behandelingen
         />
       </div>
 
+            {/* PRODUCTEN */}
+      <div className="filter-group">
+        <label htmlFor="product">Product</label>
+        <select
+          id="product"
+          value={filters.product || ""}
+          onChange={(e) => handleInputChange("product", e.target.value)}
+          className="filter-select"
+        >
+          <option value="">Alle producten</option>
+
+          {(producten || []).map((product, index) => (
+            <option key={index} value={product}>
+              {product.charAt(0).toUpperCase() + product.slice(1)}
+            </option>
+          ))}
+        </select>
+      </div>
+
       {/* REGIO INDDELING */}
       <div className="filter-group">
-        <label>Regio Indeling</label>
+        <label>Regio</label>
         
         {["lokaal", "regionaal"].map((value) => (
         <label
@@ -115,7 +134,7 @@ function FilterPanel({ filters, onFilterChange, steden, producten, behandelingen
       </div>
 
       {/* PRODUCTEN */}
-      <div className="filter-group">
+      {/* <div className="filter-group">
         <label htmlFor="product">Product</label>
         <select
           id="product"
@@ -131,12 +150,12 @@ function FilterPanel({ filters, onFilterChange, steden, producten, behandelingen
             </option>
           ))}
         </select>
-      </div>
+      </div> */}
 
       {/* SUMMARY */}
       <div className="filter-summary">
         <p className="filter-count">
-          {Object.values(filters).filter((v) => v !== "").length} filters actief
+          {Object.values(filters).filter((v) => v !== "").length} filter(s) actief
         </p>
       </div>
     </div>

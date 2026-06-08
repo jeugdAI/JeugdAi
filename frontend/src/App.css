@@ -76,7 +76,7 @@ body {
 .dashboard-header h1 {
   margin: 0;
   font-size: 2rem;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--text-color-white);
 }
 
@@ -84,7 +84,7 @@ body {
   margin: 0;
   color: var(--text-color-white);
   font-size: 1.1rem;
-  font-weight: bold;
+  font-weight: 400;
 }
 
 /* rechter kant (balans) */
@@ -257,7 +257,8 @@ body {
   gap: 0.75rem;
 }
 
-.location-info {
+.location-info,
+.address-info {
   display: flex;
   gap: 1rem;
   font-size: 0.875rem;
@@ -267,8 +268,26 @@ body {
 .stad {
   display: flex;
   align-items: center;
-  gap: 0.25rem;
+}
+.stad-lokaal{
+  background-color: var(--cjg-blauw);
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: white
+}
+.stad-regionaal{
+  background-color: var(--cjg-paars);
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: white
+}
+.address-full{
   color: var(--text-color);
+  /* font-weight: 400; */
 }
 
 .behandelingen,
@@ -321,7 +340,7 @@ body {
 
 .details-btn {
   background: none;
-  border: 2px solid var(--text-color);
+  border: 0.9px solid var(--text-color);
   border-radius: var(--radius-sm);
   padding: 0.375rem 0.75rem;
   color: var(--text-color);
@@ -332,8 +351,9 @@ body {
 }
 
 .details-btn:hover {
-  background-color: var(--cjg-blauw);
+  background-color: var(--text-color);
   color: var(--text-color-white);
+  transition: color 0.1s ease-in-out
 }
 
 .no-results {
@@ -516,7 +536,8 @@ body {
 .secondary-btn:hover {
   border-color: var(--primary-hover);
 }
-.location-text{
+.location-text,
+.address-text {
   font-weight: 600;
   color: var(--text-color);
   font-size: 0.875rem;

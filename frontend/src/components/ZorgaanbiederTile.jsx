@@ -16,11 +16,34 @@ function ZorgaanbiederTile({ zorgaanbieder, onClick }) {
 
       <div className="tile-content">
         <div className="location-info">
-          <div className="location-text">Regio Indeling:</div>
-          <span className="stad">{REGIO_LABELS[zorgaanbieder.regio_indeling] || zorgaanbieder.regio_indeling}</span>
+          <div className="location-text">Regio:</div>
+          <span
+            className={`stad ${
+              zorgaanbieder.regio_indeling === "lokaal"
+                ? "stad-lokaal"
+                : "stad-regionaal"
+            }`}
+          >
+            {REGIO_LABELS[zorgaanbieder.regio_indeling] ||
+              zorgaanbieder.regio_indeling}
+          </span>        </div>
+        
+        <div className= "address-info">
+          <div className="address-text">Adres:</div>
+          <span className="address-full">
+            {[
+                  zorgaanbieder.address,
+                  zorgaanbieder.postcode,
+                  zorgaanbieder.city,
+              ]
+                .filter(Boolean)
+                .join(", ") || "Onbekend"
+            }
+          </span>
         </div>
 
-        <div className="producten">
+
+        {/* <div className="producten">
           <span className="producten-label">Producten:</span>
           
           {zorgaanbieder.producten && zorgaanbieder.producten.length > 0 ? (
@@ -40,9 +63,9 @@ function ZorgaanbiederTile({ zorgaanbieder, onClick }) {
           ) : (
             <span className="product-tag empty">Leeg</span>
           )}
-        </div>
+        </div> */}
 
-        <div className="behandelingen">
+        {/* <div className="behandelingen">
           <span className="behandelingen-label">Behandelingen:</span>
 
           {zorgaanbieder.behandelingen && zorgaanbieder.behandelingen.length > 0 ? (
@@ -62,7 +85,7 @@ function ZorgaanbiederTile({ zorgaanbieder, onClick }) {
           ) : (
             <span className="behandeling-tag empty">Leeg</span>
           )}
-        </div>
+        </div> */}
       </div>
 
       <div className="tile-footer">
