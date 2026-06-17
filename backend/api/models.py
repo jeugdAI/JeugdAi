@@ -68,7 +68,6 @@ class Zorgaanbieder(models.Model):
         return self.name
 
 class Opmerking(models.Model):
-    # De link naar de Zorgaanbieder
     provider = models.ForeignKey(
         Zorgaanbieder, 
         on_delete=models.CASCADE, 

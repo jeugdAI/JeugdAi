@@ -6,4 +6,5 @@ urlpatterns = [
     path("zorgaanbieders/", views.zorgaanbieders_list),
     path("problematieken/", views.problematieken_list),
     path("producten/", views.producten_list),
+    path("opmerkingen/", views.opmerkingen_list),
 ]

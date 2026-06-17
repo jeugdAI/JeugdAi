@@ -542,3 +542,38 @@ body {
   color: var(--text-color);
   font-size: 0.875rem;
 }
+/* -----------------------------------------
+   Zorgaanbieder Tile - Laatste Opmerking
+----------------------------------------- */
+/* .note-container {
+  margin-top: 16px;
+} */
+
+.note-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-color);
+  margin-bottom: 6px;
+  text-align: left;
+}
+
+.note-info {
+  padding: 0.875rem;
+  background-color: var(--background-color); 
+  border-radius: var(--radius-md); 
+  border-left: 4px solid var(--cjg-blauw); 
+}
+
+.note-text {
+  font-size: 0.875rem;
+  color: var(--text-color);
+  font-style: italic;
+  text-align: left;
+}
+
+.note-owner {
+  font-size: 0.875rem;
+  color: var(--text-color);
+  margin-top: 6px;
+  text-align: right;
+}

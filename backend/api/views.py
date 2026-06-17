@@ -2,8 +2,8 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 
-from .models import Zorgaanbieder, Problematiek, Product
-from .serializers import ZorgaanbiederSerializer, ProblematiekSerializer, ProductSerializer
+from .models import Zorgaanbieder, Problematiek, Product, Opmerking 
+from .serializers import ZorgaanbiederSerializer, ProblematiekSerializer, ProductSerializer, OpmerkingSerializer
 
 
 # --------------------------------------------
@@ -16,6 +16,7 @@ def api_root(request):
             "zorgaanbieders": "/api/zorgaanbieders/",
             "problematieken": "/api/problematieken/",
             "producten": "/api/producten/",
+            "opmerkingen": "/api/opmerkingen/",
         },
         "status": "running"
     })
@@ -97,4 +98,11 @@ def producten_list(request):
     producten = Product.objects.all()
     serializer = ProductSerializer(producten, many=True)
 
+    return JsonResponse(serializer.data, safe=False)
+
+@csrf_exempt
+@require_http_methods(["GET"])
+def opmerkingen_list(request):
+    opmerkingen = Opmerking.objects.all()
+    serializer = OpmerkingSerializer(opmerkingen, many=True)
     return JsonResponse(serializer.data, safe=False)
