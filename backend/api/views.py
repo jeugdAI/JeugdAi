@@ -1,6 +1,7 @@
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
+import json
 
 from .models import Zorgaanbieder, Problematiek, Product, Opmerking 
 from .serializers import ZorgaanbiederSerializer, ProblematiekSerializer, ProductSerializer, OpmerkingSerializer
@@ -76,7 +77,7 @@ def zorgaanbieders_list(request):
 
 
 # --------------------------------------------
-# Behandelingen komt hier
+# Problematiek komt hier
 # --------------------------------------------
 @csrf_exempt
 @require_http_methods(["GET"])
@@ -101,8 +102,23 @@ def producten_list(request):
     return JsonResponse(serializer.data, safe=False)
 
 @csrf_exempt
-@require_http_methods(["GET"])
+@require_http_methods(["GET", "POST"])
 def opmerkingen_list(request):
-    opmerkingen = Opmerking.objects.all()
-    serializer = OpmerkingSerializer(opmerkingen, many=True)
-    return JsonResponse(serializer.data, safe=False)
+    if request.method == "GET":
+        opmerkingen = Opmerking.objects.all()
+        serializer = OpmerkingSerializer(opmerkingen, many=True)
+        return JsonResponse(serializer.data, safe=False)
+    
+    elif request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            serializer = OpmerkingSerializer(data=data)            
+            if serializer.is_valid():
+                new_note = serializer.save()                
+                return JsonResponse(serializer.data, status=201)
+            else:
+                return JsonResponse(serializer.errors, status=400)
+        except json.JSONDecodeError:
+            return JsonResponse({"error": "Ongeldige JSON data meegegeven."}, status=400)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)

@@ -158,7 +158,6 @@ function NAWModal({ zorgaanbieder, onClose }) {
           <button className="secondary-btn" onClick={onClose}>
             Sluiten
           </button>
-          {/* <button className="primary-btn">Contact opnemen</button> */}
         </div>
       </div>
     </div>

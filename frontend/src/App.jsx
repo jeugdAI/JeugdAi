@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import FilterPanel from "./components/FilterPanel";
 import ZorgaanbiederTile from "./components/ZorgaanbiederTile";
 import NAWModal from "./components/NAWModal";
+import AddNoteModal from "./components/AddNoteModal";
 import "./App.css";
 import Logo_big from "/Logo_big.png";
 
@@ -22,7 +23,7 @@ function App() {
 
   const [selectedZorgaanbieder, setSelectedZorgaanbieder] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [isNoteModalOpen, setIsNoteModalOpen] = useState(false);
   // ---------------------------------------
   // Alle DATA (NO FILTERING)
   // ---------------------------------------
@@ -114,6 +115,26 @@ function App() {
     setIsModalOpen(false);
     setSelectedZorgaanbieder(null);
   };
+  // 3. Openers en sluiters voor de opmerking modal
+  const handleAddNoteClick = (zorgaanbieder) => {
+    console.log("Functie start voor:", zorgaanbieder.name);
+    setSelectedZorgaanbieder(zorgaanbieder);
+    setIsNoteModalOpen(true);
+  };
+
+  const handleCloseNoteModal = () => {
+    setIsNoteModalOpen(false);
+    setSelectedZorgaanbieder(null);
+  };
+
+  // 4. Update de lokale state zodra een opmerking succesvol is opgeslagen
+  const handleSaveNote = (providerId, newNote) => {
+    const updateNotesList = (list) =>
+      list.map((z) => (z.id === providerId ? { ...z, notes: [...(z.notes || []), newNote] } : z));
+
+    setZorgaanbieders((prev) => updateNotesList(prev));
+    setAllZorgaanbieders((prev) => updateNotesList(prev));
+  };
 
   // ---------------------------------------
   // UI
@@ -150,7 +171,8 @@ function App() {
               <ZorgaanbiederTile
                 key={zorgaanbieder.id}
                 zorgaanbieder={zorgaanbieder}
-                onClick={() => handleTileClick(zorgaanbieder)}
+                onDetailsClick={() => handleTileClick(zorgaanbieder)}
+                onAddNoteClick={() => handleAddNoteClick(zorgaanbieder)}
               />
             ))}
           </div>
@@ -167,6 +189,13 @@ function App() {
         <NAWModal
           zorgaanbieder={selectedZorgaanbieder}
           onClose={handleCloseModal}
+        />
+      )}
+      {isNoteModalOpen && selectedZorgaanbieder && (
+        <AddNoteModal
+          zorgaanbieder={selectedZorgaanbieder}
+          onClose={handleCloseNoteModal}
+          onSave={handleSaveNote}
         />
       )}
     </div>

@@ -333,6 +333,8 @@ body {
   font-style: italic;
 }
 .tile-footer {
+  display: flex;
+  gap: 12px;
   margin-top: 1rem;
   padding-top: 1rem;
   border-top: 1px solid var(--border-color);
@@ -340,6 +342,7 @@ body {
 
 .details-btn {
   background: none;
+  flex: 1;
   border: 0.9px solid var(--text-color);
   border-radius: var(--radius-sm);
   padding: 0.375rem 0.75rem;
@@ -509,7 +512,9 @@ body {
 }
 
 .primary-btn,
-.secondary-btn {
+.secondary-btn,
+.note-submit-btn,
+.note-cancel-btn {
   padding: 0.625rem 1.25rem;
   border-radius: var(--radius-md);
   font-size: 0.875rem;
@@ -517,6 +522,14 @@ body {
   cursor: pointer;
   transition: all 0.15s ease-in-out;
   border: none;
+}
+.note-submit-btn {
+  background-color: var(--cjg-groen);
+  color: white;
+}
+.note-cancel-btn {
+  background-color: var(--cjg-paars);
+  color: white;
 }
 
 .primary-btn {
@@ -542,12 +555,6 @@ body {
   color: var(--text-color);
   font-size: 0.875rem;
 }
-/* -----------------------------------------
-   Zorgaanbieder Tile - Laatste Opmerking
------------------------------------------ */
-/* .note-container {
-  margin-top: 16px;
-} */
 
 .note-label {
   font-size: 0.875rem;
@@ -556,24 +563,74 @@ body {
   margin-bottom: 6px;
   text-align: left;
 }
-
 .note-info {
   padding: 0.875rem;
   background-color: var(--background-color); 
   border-radius: var(--radius-md); 
-  border-left: 4px solid var(--cjg-blauw); 
+  border-left: 4px solid var(--cjg-groen); 
 }
-
 .note-text {
   font-size: 0.875rem;
   color: var(--text-color);
   font-style: italic;
   text-align: left;
 }
-
 .note-owner {
   font-size: 0.875rem;
   color: var(--text-color);
-  margin-top: 6px;
-  text-align: right;
+}
+.note-meta-block {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end; 
+}
+.note-date {
+  font-size: 0.875rem;
+  color: var(--text-color);
+  margin-top: 2px; /* Korte afstand direct onder de owner */
+}
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  text-align: left;
+}
+
+.form-group label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-color);
+}
+.note-input,
+.note-textarea {
+  width: 100%;
+  padding: 0.625rem 0.875rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  font-family: inherit;
+  background-color: var(--card-background);
+  color: var(--text-color);
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+.note-textarea {
+  resize: vertical;
+}
+.note-input:focus,
+.note-textarea:focus {
+  outline: none;
+  border-color: var(--cjg-blauw);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+/* Disabled state voor tijdens het API-verzoek */
+.note-submit-btn:disabled,
+.note-cancel-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
