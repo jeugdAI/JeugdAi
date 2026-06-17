@@ -1,13 +1,13 @@
 from django.db import models
 
-class Behandeling(models.Model):
+class Problematiek(models.Model):
     id = models.BigAutoField(primary_key=True)
     name = models.CharField(max_length=255)
 
     class Meta:
-        db_table = 'behandelingen'
-        verbose_name = 'Behandeling'
-        verbose_name_plural = 'Behandelingen'
+        db_table = 'problematieken'
+        verbose_name = 'Problematiek'
+        verbose_name_plural = 'Problematieken'
 
     def __str__(self):
         return self.name
@@ -41,24 +41,24 @@ class Zorgaanbieder(models.Model):
     
     postcode = models.CharField(max_length=20)
     city = models.CharField(max_length=100)
-    notes = models.TextField(blank=True, null=True)
-    notes_owner = models.CharField(max_length=255, blank=True, null=True)
-    notes_created_at = models.DateField(blank=True, null=True)
     regio_indeling = models.CharField(max_length=20, choices=REGION_CHOICES)
-    # hier zetten we de connectie van zorgaanbieders naar behandelingen, een zorgaanbieder kan meerdere behandelingen aanbieden, 
-    # en een behandeling kan door meerdere zorgaanbieders worden aangeboden. Daarom gebruiken we een ManyToManyField.
-    # blank=True means a provider doesn't *have* to have any Behandeling.
-    behandelingen = models.ManyToManyField(
-        Behandeling, 
+    
+    # Hier zetten we de connectie van zorgaanbieders naar problematieken.
+    # Een zorgaanbieder kan meerdere problematieken behandelen, en een problematiek kan 
+    # door meerdere zorgaanbieders worden behandeld.
+    problematieken = models.ManyToManyField(
+        Problematiek, 
         blank=True,
-        db_table='zorgaanbieder_behandelingen' 
+        db_table='zorgaanbieder_problematieken' 
     )
+    
     # Many-to-many relatie met producten
     producten = models.ManyToManyField(
         Product,
         blank=True,
         db_table='zorgaanbieder_producten'
     )
+    
     class Meta:
         db_table = 'zorgaanbieders'
         verbose_name = 'Zorgaanbieder'
@@ -66,3 +66,25 @@ class Zorgaanbieder(models.Model):
 
     def __str__(self):
         return self.name
+
+class Opmerking(models.Model):
+    # De link naar de Zorgaanbieder
+    provider = models.ForeignKey(
+        Zorgaanbieder, 
+        on_delete=models.CASCADE, 
+        related_name='notes'
+    )
+    
+    # De velden van de opmerking zelf
+    text = models.TextField()
+    owner = models.CharField(max_length=255, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True) 
+
+    class Meta:
+        # De naam van de tabel in de database
+        db_table = 'opmerkingen' 
+        verbose_name = 'Opmerking'
+        verbose_name_plural = 'Opmerkingen'
+
+    def __str__(self):
+        return f"Note from {self.owner} for {self.provider.name}"

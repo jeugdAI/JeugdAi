@@ -114,7 +114,7 @@ function NAWModal({ zorgaanbieder, onClose }) {
             </div>
           </div>
 
-          <div className="naw-section">
+          {/* <div className="naw-section">
             <h3>Opmerkingen</h3>
             <div className="naw-grid">
               <div className="naw-item">
@@ -123,7 +123,7 @@ function NAWModal({ zorgaanbieder, onClose }) {
                 </span>
               </div>
             </div>
-          </div>
+          </div> */}
 
           <div className="naw-section">
             <h3>Producten</h3>
@@ -140,14 +140,14 @@ function NAWModal({ zorgaanbieder, onClose }) {
           </div>
 
           <div className="naw-section">
-            <h3>Behandelingen</h3>
-            <div className="behandelingen-list">
-              {(zorgaanbieder.behandelingen || []).map((behandeling) => (
+            <h3>Problematiek</h3>
+            <div className="problematieken-list">
+              {(zorgaanbieder.problematieken || []).map((problematiek) => (
                 <span
-                  key={behandeling.id ?? behandeling.name}
-                  className="behandeling-badge"
+                  key={problematiek.id ?? problematiek.name}
+                  className="problematiek-badge"
                 >
-                  {behandeling.name ?? behandeling}
+                  {problematiek.name ?? problematiek}
                 </span>
               ))}
             </div>

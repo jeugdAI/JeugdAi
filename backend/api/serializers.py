@@ -1,9 +1,9 @@
 from rest_framework import serializers
-from .models import Zorgaanbieder, Behandeling, Product
+from .models import Zorgaanbieder, Problematiek, Product
 
-class BehandelingSerializer(serializers.ModelSerializer):
+class ProblematiekSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Behandeling
+        model = Problematiek
         fields = ["id", "name"]
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -12,7 +12,7 @@ class ProductSerializer(serializers.ModelSerializer):
         fields = ["id", "name", "code"]
 
 class ZorgaanbiederSerializer(serializers.ModelSerializer):
-    behandelingen = BehandelingSerializer(many=True, read_only=True)
+    problematieken = ProblematiekSerializer(many=True, read_only=True)
     producten = ProductSerializer(many=True, read_only=True)
     class Meta:
         model = Zorgaanbieder
@@ -26,10 +26,7 @@ class ZorgaanbiederSerializer(serializers.ModelSerializer):
             "phone_number_3",
             "postcode",
             "city",
-            "behandelingen",
+            "problematieken",
             "producten",
-            "notes",
-            "notes_owner",
-            "notes_created_at",
             "regio_indeling"
         ]

@@ -2,8 +2,8 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 
-from .models import Zorgaanbieder, Behandeling, Product
-from .serializers import ZorgaanbiederSerializer, BehandelingSerializer, ProductSerializer
+from .models import Zorgaanbieder, Problematiek, Product
+from .serializers import ZorgaanbiederSerializer, ProblematiekSerializer, ProductSerializer
 
 
 # --------------------------------------------
@@ -14,7 +14,7 @@ def api_root(request):
         "message": "Zorg Dashboard API",
         "endpoints": {
             "zorgaanbieders": "/api/zorgaanbieders/",
-            "behandelingen": "/api/behandelingen/",
+            "problematieken": "/api/problematieken/",
             "producten": "/api/producten/",
         },
         "status": "running"
@@ -28,7 +28,7 @@ def api_root(request):
 @require_http_methods(["GET"])
 def zorgaanbieders_list(request):
 
-    queryset = Zorgaanbieder.objects.prefetch_related("behandelingen", "producten").all()
+    queryset = Zorgaanbieder.objects.prefetch_related("problematieken", "producten").all()
 
     # ----------------------------------------
     # FILTER: stad
@@ -52,12 +52,12 @@ def zorgaanbieders_list(request):
         queryset = queryset.filter(name__icontains=search)
 
     # ----------------------------------------
-    # FILTER: Behandeling (M2M)
+    # FILTER: Problematiek (M2M)
     # ----------------------------------------
-    behandeling = request.GET.get("behandeling")
-    if behandeling:
+    problematiek = request.GET.get("problematiek")
+    if problematiek:
         queryset = queryset.filter(
-            behandelingen__name=behandeling
+            problematieken__name=problematiek
         ).distinct()
 
     # ----------------------------------------
@@ -79,10 +79,10 @@ def zorgaanbieders_list(request):
 # --------------------------------------------
 @csrf_exempt
 @require_http_methods(["GET"])
-def behandelingen_list(request):
+def problematieken_list(request):
 
-    behandelingen = Behandeling.objects.all()
-    serializer = BehandelingSerializer(behandelingen, many=True)
+    problematieken = Problematiek.objects.all()
+    serializer = ProblematiekSerializer(problematieken, many=True)
 
     return JsonResponse(serializer.data, safe=False)
 

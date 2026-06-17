@@ -1,6 +1,6 @@
 import React from "react";
 
-function FilterPanel({ filters, onFilterChange, steden, producten, behandelingen }) {
+function FilterPanel({ filters, onFilterChange, steden, producten, problematieken }) {
   const handleInputChange = (field, value) => {
     onFilterChange({ [field]: value });
   };
@@ -8,7 +8,7 @@ function FilterPanel({ filters, onFilterChange, steden, producten, behandelingen
   const clearFilters = () => {
     onFilterChange({
       stad: "",
-      behandeling: "",
+      problematiek: "",
       product: "",
       search: "",
       regio_indeling: ""
@@ -52,6 +52,25 @@ function FilterPanel({ filters, onFilterChange, steden, producten, behandelingen
           {(producten || []).map((product, index) => (
             <option key={index} value={product}>
               {product.charAt(0).toUpperCase() + product.slice(1)}
+            </option>
+          ))}
+        </select>
+      </div>
+
+            {/* PROBLEMATIEKEN */}
+      <div className="filter-group">
+        <label htmlFor="problematiek">Problematiek</label>
+        <select
+          id="problematiek"
+          value={filters.problematiek || ""}
+          onChange={(e) => handleInputChange("problematiek", e.target.value)}
+          className="filter-select"
+        >
+          <option value="">Alle problematieken</option>
+
+          {(problematieken || []).map((problematiek, index) => (
+            <option key={index} value={problematiek}>
+              {problematiek.charAt(0).toUpperCase() + problematiek.slice(1)}
             </option>
           ))}
         </select>
@@ -114,43 +133,6 @@ function FilterPanel({ filters, onFilterChange, steden, producten, behandelingen
         </select>
       </div>
 
-      {/* BEHANDELINGEN */}
-      <div className="filter-group">
-        <label htmlFor="behandeling">Behandeling</label>
-        <select
-          id="behandeling"
-          value={filters.behandeling || ""}
-          onChange={(e) => handleInputChange("behandeling", e.target.value)}
-          className="filter-select"
-        >
-          <option value="">Alle behandelingen</option>
-
-          {(behandelingen || []).map((behandeling, index) => (
-            <option key={index} value={behandeling}>
-              {behandeling.charAt(0).toUpperCase() + behandeling.slice(1)}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      {/* PRODUCTEN */}
-      {/* <div className="filter-group">
-        <label htmlFor="product">Product</label>
-        <select
-          id="product"
-          value={filters.product || ""}
-          onChange={(e) => handleInputChange("product", e.target.value)}
-          className="filter-select"
-        >
-          <option value="">Alle producten</option>
-
-          {(producten || []).map((product, index) => (
-            <option key={index} value={product}>
-              {product.charAt(0).toUpperCase() + product.slice(1)}
-            </option>
-          ))}
-        </select>
-      </div> */}
 
       {/* SUMMARY */}
       <div className="filter-summary">

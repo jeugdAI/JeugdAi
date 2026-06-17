@@ -9,7 +9,7 @@ function App() {
   // STATE
   const [filters, setFilters] = useState({
     stad: "",
-    behandeling: "",
+    problematiek: "",
     product: "",
     search: "",
     regio_indeling: [],
@@ -17,7 +17,7 @@ function App() {
 
   const [allZorgaanbieders, setAllZorgaanbieders] = useState([]);
   const [zorgaanbieders, setZorgaanbieders] = useState([]);
-  const [behandelingen, setBehandelingen] = useState([]);
+  const [problematieken, setProblematieken] = useState([]);
   const [producten, setProducten] = useState([]);
 
   const [selectedZorgaanbieder, setSelectedZorgaanbieder] = useState(null);
@@ -43,8 +43,8 @@ function App() {
       );
     if (filters.stad) params.append("stad", filters.stad);
     if (filters.search) params.append("search", filters.search);
-    if (filters.behandeling)
-      params.append("behandeling", filters.behandeling);
+    if (filters.problematiek)
+      params.append("problematiek", filters.problematiek);
     if (filters.product)
       params.append("product", filters.product);
 
@@ -64,12 +64,12 @@ function App() {
       .catch((err) => console.error("Producten error:", err));
   }, []);
 
-  useEffect(() => {
-    fetch("http://localhost:8000/api/specialisaties/")
-      .then((res) => res.json())
-      .then((data) => setSpecialisaties(data))
-      .catch((err) => console.error("Specialisaties error:", err));
-  }, []);
+  // useEffect(() => {
+  //   fetch("http://localhost:8000/api/specialisaties/")
+  //     .then((res) => res.json())
+  //     .then((data) => setSpecialisaties(data))
+  //     .catch((err) => console.error("Specialisaties error:", err));
+  // }, []);
 
   // ---------------------------------------
   // DERIVED DATA (NO FILTERING HERE!)
@@ -78,11 +78,11 @@ function App() {
     return [...new Set(allZorgaanbieders.map((z) => z.city))].sort();
   }, [allZorgaanbieders]);
 
-  const behandelingOptions = useMemo(() => {
+  const problematiekOptions = useMemo(() => {
     return [
       ...new Set(
         allZorgaanbieders.flatMap((z) =>
-          (z.behandelingen || []).map((b) => b.name),
+          (z.problematieken || []).map((p) => p.name),
         ),
       ),
     ].sort();
@@ -135,7 +135,7 @@ function App() {
             filters={filters}
             onFilterChange={handleFilterChange}
             steden={steden}
-            behandelingen={behandelingOptions}
+            problematieken={problematiekOptions}
             producten={productOptions}
           />
         </aside>

@@ -290,14 +290,14 @@ body {
   /* font-weight: 400; */
 }
 
-.behandelingen,
+.problematieken,
 .producten {
   display: flex;
   flex-wrap: wrap;
   gap: 0.375rem;
 }
 
-.behandeling-tag,
+.problematiek-tag,
 .product-tag {
   background-color: var(--background-color);
   color: var(--text-secondary);
@@ -306,7 +306,7 @@ body {
   font-size: 0.75rem;
   font-weight: 500;
 }
-.behandeling-tag{
+.problematiek-tag{
   background-color: var(--cjg-groen);
   color: white;
 }
@@ -314,19 +314,19 @@ body {
   background-color: var(--cjg-blauw);
   color: white;
 }
-.behandeling-tag.more,
+.problematiek-tag.more,
 .product-tag.more {
   background-color: var(--text-muted);
   color: white;
 }
 .producten-label,
-.behandelingen-label {
+.problematieken-label {
   font-weight: 600;
   color: var(--text-color);
   font-size: 0.875rem;
   /* margin-right: 0.5rem; */
 }
-.behandeling-tag.empty,
+.problematiek-tag.empty,
 .product-tag.empty {
   background-color: var(--cjg-paars);
   color: white;
@@ -476,14 +476,14 @@ body {
   font-size: 0.875rem;
 }
 
-.behandelingen-list,
+.problematieken-list,
 .producten-list {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
 }
 
-.behandeling-badge {
+.problematiek-badge {
   background-color: var(--cjg-groen);
   color: white;
   padding: 0.375rem 0.75rem;
