@@ -113,18 +113,39 @@ function NAWModal({ zorgaanbieder, onClose }) {
               </div>
             </div>
           </div>
-
-          {/* <div className="naw-section">
+          <div className="naw-section">
             <h3>Opmerkingen</h3>
-            <div className="naw-grid">
-              <div className="naw-item">
-                <span>
-                  {zorgaanbieder.naw?.notes ?? zorgaanbieder.notes ?? "-"}
-                </span>
+            {zorgaanbieder.notes && zorgaanbieder.notes.length > 0 ? (
+              <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+                {[...zorgaanbieder.notes]
+                  .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+                  .map((note, index) => (
+                    <div key={note.id || index} className="note-info">
+                      <div className="note-text">"{note.text}"</div>
+                      <div className="note-meta-block">
+                        <div className="note-owner">
+                          ~ {note.owner || "Onbekend"}
+                        </div>
+                        {note.created_at && (
+                          <div className="note-date">
+                            {new Date(note.created_at).toLocaleDateString("nl-NL")}
+                            {" "}om{" "}
+                            {new Date(note.created_at).toLocaleTimeString("nl-NL", {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            })}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
               </div>
-            </div>
-          </div> */}
-
+            ) : (
+              <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)", margin: 0 }}>
+                Er zijn nog geen opmerkingen geplaatst voor deze zorgaanbieder.
+              </p>
+            )}
+          </div>
           <div className="naw-section">
             <h3>Producten</h3>
             <div className="producten-list">

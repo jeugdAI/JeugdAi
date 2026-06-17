@@ -49,8 +49,6 @@ const handleButtonClick = (e, callback) => {
               .join(", ") || "Onbekend"}
           </span>
         </div>
-
-        {/* 2. Toon de opmerking als die bestaat */}
         {latestNote && (
           <div className="note-container">
             <div className="note-label">Laatste opmerking</div>

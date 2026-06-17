@@ -64,14 +64,6 @@ function App() {
       .then((data) => setProducten(data))
       .catch((err) => console.error("Producten error:", err));
   }, []);
-
-  // useEffect(() => {
-  //   fetch("http://localhost:8000/api/specialisaties/")
-  //     .then((res) => res.json())
-  //     .then((data) => setSpecialisaties(data))
-  //     .catch((err) => console.error("Specialisaties error:", err));
-  // }, []);
-
   // ---------------------------------------
   // DERIVED DATA (NO FILTERING HERE!)
   // ---------------------------------------
@@ -115,7 +107,6 @@ function App() {
     setIsModalOpen(false);
     setSelectedZorgaanbieder(null);
   };
-  // 3. Openers en sluiters voor de opmerking modal
   const handleAddNoteClick = (zorgaanbieder) => {
     console.log("Functie start voor:", zorgaanbieder.name);
     setSelectedZorgaanbieder(zorgaanbieder);
@@ -126,8 +117,6 @@ function App() {
     setIsNoteModalOpen(false);
     setSelectedZorgaanbieder(null);
   };
-
-  // 4. Update de lokale state zodra een opmerking succesvol is opgeslagen
   const handleSaveNote = (providerId, newNote) => {
     const updateNotesList = (list) =>
       list.map((z) => (z.id === providerId ? { ...z, notes: [...(z.notes || []), newNote] } : z));
