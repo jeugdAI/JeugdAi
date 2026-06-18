@@ -1,6 +1,6 @@
 import React from "react";
 
-function FilterPanel({ filters, onFilterChange, steden, specialisaties }) {
+function FilterPanel({ filters, onFilterChange, steden, producten, problematieken }) {
   const handleInputChange = (field, value) => {
     onFilterChange({ [field]: value });
   };
@@ -8,11 +8,13 @@ function FilterPanel({ filters, onFilterChange, steden, specialisaties }) {
   const clearFilters = () => {
     onFilterChange({
       stad: "",
-      specialisatie: "",
+      problematiek: "",
+      product: "",
       search: "",
+      regio_indeling: ""
     });
   };
-
+  console.table(filters);
   return (
     <div className="filter-panel">
       {/* HEADER */}
@@ -36,6 +38,82 @@ function FilterPanel({ filters, onFilterChange, steden, specialisaties }) {
         />
       </div>
 
+            {/* PRODUCTEN */}
+      <div className="filter-group">
+        <label htmlFor="product">Product</label>
+        <select
+          id="product"
+          value={filters.product || ""}
+          onChange={(e) => handleInputChange("product", e.target.value)}
+          className="filter-select"
+        >
+          <option value="">Alle producten</option>
+
+          {(producten || []).map((product, index) => (
+            <option key={index} value={product}>
+              {product.charAt(0).toUpperCase() + product.slice(1)}
+            </option>
+          ))}
+        </select>
+      </div>
+
+            {/* PROBLEMATIEKEN */}
+      <div className="filter-group">
+        <label htmlFor="problematiek">Problematiek</label>
+        <select
+          id="problematiek"
+          value={filters.problematiek || ""}
+          onChange={(e) => handleInputChange("problematiek", e.target.value)}
+          className="filter-select"
+        >
+          <option value="">Alle problematieken</option>
+
+          {(problematieken || []).map((problematiek, index) => (
+            <option key={index} value={problematiek}>
+              {problematiek.charAt(0).toUpperCase() + problematiek.slice(1)}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* REGIO INDDELING */}
+      <div className="filter-group">
+        <label>Regio</label>
+        
+        {["lokaal", "regionaal"].map((value) => (
+        <label
+          key={value}
+          style={{
+           display: "flex",
+           alignItems: "center",
+           gap: "10px",
+           width: "100%"
+          }}
+        >
+          {value.charAt(0).toUpperCase() + value.slice(1)}
+        
+          <input
+            type="checkbox"
+            value={value}
+            checked={(filters.regio_indeling || []).includes(value)}
+            onChange={(e) => {
+              const checked = e.target.checked;
+              let updated = filters.regio_indeling || [];
+            
+              if (checked) {
+                updated = [...updated, value];
+              } else {
+                updated = updated.filter((v) => v !== value);
+              }
+            
+              handleInputChange("regio_indeling", updated);
+            }}
+          />
+        </label>
+      ))}
+      </div>
+
+
       {/* STAD */}
       <div className="filter-group">
         <label htmlFor="stad">Stad</label>
@@ -55,29 +133,11 @@ function FilterPanel({ filters, onFilterChange, steden, specialisaties }) {
         </select>
       </div>
 
-      {/* SPECIALISATIES */}
-      <div className="filter-group">
-        <label htmlFor="specialisatie">Specialisatie</label>
-        <select
-          id="specialisatie"
-          value={filters.specialisatie || ""}
-          onChange={(e) => handleInputChange("specialisatie", e.target.value)}
-          className="filter-select"
-        >
-          <option value="">Alle specialisaties</option>
-
-          {(specialisaties || []).map((spec, index) => (
-            <option key={index} value={spec}>
-              {spec.charAt(0).toUpperCase() + spec.slice(1)}
-            </option>
-          ))}
-        </select>
-      </div>
 
       {/* SUMMARY */}
       <div className="filter-summary">
         <p className="filter-count">
-          {Object.values(filters).filter((v) => v !== "").length} filters actief
+          {Object.values(filters).filter((v) => v !== "").length} filter(s) actief
         </p>
       </div>
     </div>

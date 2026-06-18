@@ -1,9 +1,10 @@
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
+import json
 
-from .models import Zorgaanbieder, Specialisatie
-from .serializers import ZorgaanbiederSerializer, SpecialisatieSerializer
+from .models import Zorgaanbieder, Problematiek, Product, Opmerking 
+from .serializers import ZorgaanbiederSerializer, ProblematiekSerializer, ProductSerializer, OpmerkingSerializer
 
 
 # --------------------------------------------
@@ -14,7 +15,9 @@ def api_root(request):
         "message": "Zorg Dashboard API",
         "endpoints": {
             "zorgaanbieders": "/api/zorgaanbieders/",
-            "specialisaties": "/api/specialisaties/",
+            "problematieken": "/api/problematieken/",
+            "producten": "/api/producten/",
+            "opmerkingen": "/api/opmerkingen/",
         },
         "status": "running"
     })
@@ -27,7 +30,7 @@ def api_root(request):
 @require_http_methods(["GET"])
 def zorgaanbieders_list(request):
 
-    queryset = Zorgaanbieder.objects.prefetch_related("specialisaties").all()
+    queryset = Zorgaanbieder.objects.prefetch_related("problematieken", "producten").all()
 
     # ----------------------------------------
     # FILTER: stad
@@ -37,6 +40,13 @@ def zorgaanbieders_list(request):
         queryset = queryset.filter(city=stad)
 
     # ----------------------------------------
+    # FILTER: regio
+    # ----------------------------------------
+    regio = request.GET.getlist("regio_indeling")
+    if regio:
+        queryset = queryset.filter(regio_indeling__in=regio)
+
+    # ----------------------------------------
     # FILTER: search (naam)
     # ----------------------------------------
     search = request.GET.get("search")
@@ -44,12 +54,21 @@ def zorgaanbieders_list(request):
         queryset = queryset.filter(name__icontains=search)
 
     # ----------------------------------------
-    # FILTER: specialisatie (M2M)
+    # FILTER: Problematiek (M2M)
     # ----------------------------------------
-    specialisatie = request.GET.get("specialisatie")
-    if specialisatie:
+    problematiek = request.GET.get("problematiek")
+    if problematiek:
         queryset = queryset.filter(
-            specialisaties__name=specialisatie
+            problematieken__name=problematiek
+        ).distinct()
+
+    # ----------------------------------------
+    # FILTER: Product (M2M)
+    # ----------------------------------------
+    product = request.GET.get("product")
+    if product:
+        queryset = queryset.filter(
+            producten__name=product
         ).distinct()
 
     serializer = ZorgaanbiederSerializer(queryset, many=True)
@@ -58,13 +77,48 @@ def zorgaanbieders_list(request):
 
 
 # --------------------------------------------
-# Specialaisatie komt hier
+# Problematiek komt hier
 # --------------------------------------------
 @csrf_exempt
 @require_http_methods(["GET"])
-def specialisaties_list(request):
+def problematieken_list(request):
 
-    specialisaties = Specialisatie.objects.all()
-    serializer = SpecialisatieSerializer(specialisaties, many=True)
+    problematieken = Problematiek.objects.all()
+    serializer = ProblematiekSerializer(problematieken, many=True)
 
     return JsonResponse(serializer.data, safe=False)
+
+
+# --------------------------------------------
+# Producten komt hier
+# --------------------------------------------
+@csrf_exempt
+@require_http_methods(["GET"])
+def producten_list(request):
+
+    producten = Product.objects.all()
+    serializer = ProductSerializer(producten, many=True)
+
+    return JsonResponse(serializer.data, safe=False)
+
+@csrf_exempt
+@require_http_methods(["GET", "POST"])
+def opmerkingen_list(request):
+    if request.method == "GET":
+        opmerkingen = Opmerking.objects.all()
+        serializer = OpmerkingSerializer(opmerkingen, many=True)
+        return JsonResponse(serializer.data, safe=False)
+    
+    elif request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            serializer = OpmerkingSerializer(data=data)            
+            if serializer.is_valid():
+                new_note = serializer.save()                
+                return JsonResponse(serializer.data, status=201)
+            else:
+                return JsonResponse(serializer.errors, status=400)
+        except json.JSONDecodeError:
+            return JsonResponse({"error": "Ongeldige JSON data meegegeven."}, status=400)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)

@@ -1,14 +1,25 @@
 from rest_framework import serializers
-from .models import Zorgaanbieder, Specialisatie
+from .models import Zorgaanbieder, Problematiek, Product, Opmerking
 
-class SpecialisatieSerializer(serializers.ModelSerializer):
+class ProblematiekSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Specialisatie
+        model = Problematiek
         fields = ["id", "name"]
 
+class ProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = ["id", "name", "code"]
+
+class OpmerkingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Opmerking
+        fields = ["id", "text", "owner", "created_at", "provider"]
 
 class ZorgaanbiederSerializer(serializers.ModelSerializer):
-    specialisaties = SpecialisatieSerializer(many=True, read_only=True)
+    problematieken = ProblematiekSerializer(many=True, read_only=True)
+    producten = ProductSerializer(many=True, read_only=True)
+    notes = OpmerkingSerializer(many=True, read_only=True) 
 
     class Meta:
         model = Zorgaanbieder
@@ -22,5 +33,8 @@ class ZorgaanbiederSerializer(serializers.ModelSerializer):
             "phone_number_3",
             "postcode",
             "city",
-            "specialisaties",
+            "problematieken",
+            "producten",
+            "notes",
+            "regio_indeling"
         ]

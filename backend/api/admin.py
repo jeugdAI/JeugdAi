@@ -1,20 +1,29 @@
 from django.contrib import admin
-from .models import Zorgaanbieder, Specialisatie
+from .models import Zorgaanbieder, Problematiek, Product, Opmerking
 
-# This adds a clean, searchable interface for your providers
+class OpmerkingInline(admin.TabularInline):
+    model = Opmerking
+    readonly_fields = ('created_at',)
+    extra = 0
+
 @admin.register(Zorgaanbieder)
 class ZorgaanbiederAdmin(admin.ModelAdmin):
-    # This controls which columns show up in the main list view
     list_display = ('name', 'city', 'email')
-    
-    # This adds a search bar to search providers by name or city
     search_fields = ('name', 'city')
-    
-    # This makes the Many-to-Many field look like a nice side-by-side selection box
-    filter_horizontal = ('specialisaties',)
+    # filter_horizontal = ('problematieken',)
+    inlines= [OpmerkingInline]
 
-# This registers the specializations table
-@admin.register(Specialisatie)
-class SpecialisatieAdmin(admin.ModelAdmin):
+@admin.register(Problematiek)
+class ProblematiekAdmin(admin.ModelAdmin):
     list_display = ('name',)
     search_fields = ('name',)
+
+@admin.register(Product)
+class ProductAdmin(admin.ModelAdmin):
+    list_display = ('name', 'code')
+    search_fields = ('name', 'code')
+
+@admin.register(Opmerking)
+class OpmerkingAdmin(admin.ModelAdmin):
+    list_display = ('provider', 'owner', 'created_at')
+    search_fields = ('text', 'owner')

@@ -1,74 +1,83 @@
 import React from "react";
+import { MapPinIcon } from "@heroicons/react/24/outline";
 
-function ZorgaanbiederTile({ zorgaanbieder, onClick }) {
-  // const getRatingStars = (rating) => {
-  //   const stars = [];
-  //   const fullStars = Math.floor(rating);
-  //   const hasHalfStar = rating % 1 !== 0;
+function ZorgaanbiederTile({ zorgaanbieder, onAddNoteClick, onDetailsClick }) {
+  const REGIO_LABELS = {
+    lokaal: "Lokaal",
+    regionaal: "Regionaal",
+  };
 
-  //   for (let i = 0; i < fullStars; i++) {
-  //     stars.push(
-  //       <span key={i} className="star full">
-  //         ★
-  //       </span>,
-  //     );
-  //   }
+  const latestNote = zorgaanbieder.notes && zorgaanbieder.notes.length > 0
+    ? [...zorgaanbieder.notes].sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0]
+    : null;
 
-  //   if (hasHalfStar) {
-  //     stars.push(
-  //       <span key="half" className="star half">
-  //         ★
-  //       </span>,
-  //     );
-  //   }
-
-  //   const emptyStars = 5 - Math.ceil(rating);
-  //   for (let i = 0; i < emptyStars; i++) {
-  //     stars.push(
-  //       <span key={`empty-${i}`} className="star empty">
-  //         ☆
-  //       </span>,
-  //     );
-  //   }
-
-  //   return stars;
-  // };
+const handleButtonClick = (e, callback) => {
+    e.stopPropagation();
+    if (callback) callback();
+  };
 
   return (
-    <div className="zorgaanbieder-tile" onClick={onClick}>
+    <div className="zorgaanbieder-tile" onClick={onDetailsClick}>
       <div className="tile-header">
         <h3 className="zorgaanbieder-naam">{zorgaanbieder.name}</h3>
-        {/* <span className="zorgaanbieder-type">{zorgaanbieder.status}</span> */}
       </div>
 
       <div className="tile-content">
         <div className="location-info">
-          <span className="stad">📍 {zorgaanbieder.city}</span>
-          {/* <span className="capaciteit">👥 {zorgaanbieder.capaciteit} plaatsen</span> */}
+          <div className="location-text">Regio:</div>
+          <span
+            className={`stad ${
+              zorgaanbieder.regio_indeling === "lokaal"
+                ? "stad-lokaal"
+                : "stad-regionaal"
+            }`}
+          >
+            {REGIO_LABELS[zorgaanbieder.regio_indeling] ||
+              zorgaanbieder.regio_indeling}
+          </span>
         </div>
 
-        {/* <div className="rating">
-          <div className="stars">
-            {getRatingStars(zorgaanbieder.rating)}
+        <div className="address-info">
+          <div className="address-text">Adres:</div>
+          <span className="address-full">
+            {[
+              zorgaanbieder.address,
+              zorgaanbieder.postcode,
+              zorgaanbieder.city,
+            ]
+              .filter(Boolean)
+              .join(", ") || "Onbekend"}
+          </span>
+        </div>
+        {latestNote && (
+          <div className="note-container">
+            <div className="note-label">Laatste opmerking</div>
+            <div className="note-info">
+              <div className="note-text">
+                "{latestNote.text}"
+              </div>
+              
+              <div className="note-meta-block">
+                <div className="note-owner">
+                  ~ {latestNote.owner || "Onbekend"}
+                </div>
+                {latestNote.created_at && (
+                  <div className="note-date">
+                    {new Date(latestNote.created_at).toLocaleDateString("nl-NL")}
+                  </div>
+                )}
+              </div>
+
+            </div>
           </div>
-          <span className="rating-number">{zorgaanbieder.rating}</span>
-        </div> */}
+        )}
 
-        <div className="specialisaties">
-          {zorgaanbieder.specialisaties.slice(0, 2).map((spec) => (
-            <span key={spec.id ?? spec.name} className="specialisatie-tag">
-              {spec.name ?? spec}
-            </span>
-          ))}
-          {zorgaanbieder.specialisaties.length > 2 && (
-            <span className="specialisatie-tag more">
-              +{zorgaanbieder.specialisaties.length - 2}
-            </span>
-          )}
         </div>
-      </div>
 
       <div className="tile-footer">
+        <button className="details-btn" onClick={(e) => handleButtonClick(e, onAddNoteClick)}>
+          + Opmerking
+        </button>
         <button className="details-btn">Bekijk details</button>
       </div>
     </div>

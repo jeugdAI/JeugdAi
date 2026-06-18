@@ -1,4 +1,7 @@
 :root {
+  --cjg-paars: #a31781;
+  --cjg-groen: #8abd24;
+  --cjg-blauw: #0080a4;
   --primary-color: #2563eb;
   --primary-hover: #1d4ed8;
   --secondary-color: #64748b;
@@ -8,9 +11,10 @@
   --border-color: #e5e7eb;
   --background-color: #f8fafc;
   --card-background: #ffffff;
-  --text-color: #1e293b;
+  --text-color: #000000;
   --text-secondary: #64748b;
   --text-muted: #94a3b8;
+  --text-color-white: #ffffff;
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   --shadow-md:
     0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
@@ -45,23 +49,47 @@ body {
 }
 
 .dashboard-header {
-  background: var(--card-background);
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+
+  background: linear-gradient(90deg, var(--cjg-groen), var(--cjg-blauw));
   border-bottom: 1px solid var(--border-color);
-  padding: 1.5rem 2rem;
+  padding: 0.7rem 2rem;
   box-shadow: var(--shadow-sm);
 }
 
+/* LOGO links */
+.dashboard-header img {
+  height: 75px;
+  width: auto;
+  justify-self: start;
+}
+.header-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  justify-self: center;
+}
+
 .dashboard-header h1 {
-  margin: 0 0 0.5rem 0;
-  font-size: 1.875rem;
-  font-weight: 700;
-  color: var(--text-color);
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 500;
+  color: var(--text-color-white);
 }
 
 .dashboard-header p {
   margin: 0;
-  color: var(--text-secondary);
-  font-size: 1rem;
+  color: var(--text-color-white);
+  font-size: 1.1rem;
+  font-weight: 400;
+}
+
+/* rechter kant (balans) */
+.header-spacer {
+  justify-self: end;
 }
 
 .dashboard-content {
@@ -103,13 +131,13 @@ body {
   border-radius: var(--radius-sm);
   font-size: 0.875rem;
   cursor: pointer;
-  transition: all 0.15s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 
 .clear-filters-btn:hover {
-  background-color: var(--background-color);
+  background-color: var(--cjg-paars);
   border-color: var(--primary-color);
-  color: var(--primary-color);
+  color: var(--text-color-white);
 }
 
 .filter-group {
@@ -189,9 +217,10 @@ body {
 }
 
 .zorgaanbieder-tile:hover {
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-lg);
   transform: translateY(-2px);
-  border-color: var(--primary-color);
+  border: 3px solid var(--cjg-groen)
+  /* border-color: var(--cjg-groen); */
 }
 
 .tile-header {
@@ -199,6 +228,7 @@ body {
   justify-content: space-between;
   align-items: flex-start;
   margin-bottom: 1rem;
+  border-bottom: 5px solid var(--border-color);
 }
 
 .zorgaanbieder-naam {
@@ -227,61 +257,48 @@ body {
   gap: 0.75rem;
 }
 
-.location-info {
+.location-info,
+.address-info {
   display: flex;
   gap: 1rem;
   font-size: 0.875rem;
   color: var(--text-secondary);
 }
 
-.stad,
-.capaciteit {
+.stad {
   display: flex;
   align-items: center;
-  gap: 0.25rem;
 }
-
-.rating {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.stars {
-  display: flex;
-  gap: 0.125rem;
-}
-
-.star {
-  font-size: 1rem;
-  line-height: 1;
-}
-
-.star.full {
-  color: #fbbf24;
-}
-
-.star.half {
-  color: #fbbf24;
-}
-
-.star.empty {
-  color: var(--text-muted);
-}
-
-.rating-number {
-  font-size: 0.875rem;
-  color: var(--text-secondary);
+.stad-lokaal{
+  background-color: var(--cjg-blauw);
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
   font-weight: 500;
+  color: white
+}
+.stad-regionaal{
+  background-color: var(--cjg-paars);
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: white
+}
+.address-full{
+  color: var(--text-color);
+  /* font-weight: 400; */
 }
 
-.specialisaties {
+.problematieken,
+.producten {
   display: flex;
   flex-wrap: wrap;
   gap: 0.375rem;
 }
 
-.specialisatie-tag {
+.problematiek-tag,
+.product-tag {
   background-color: var(--background-color);
   color: var(--text-secondary);
   padding: 0.25rem 0.5rem;
@@ -289,13 +306,35 @@ body {
   font-size: 0.75rem;
   font-weight: 500;
 }
-
-.specialisatie-tag.more {
+.problematiek-tag{
+  background-color: var(--cjg-groen);
+  color: white;
+}
+.product-tag {
+  background-color: var(--cjg-blauw);
+  color: white;
+}
+.problematiek-tag.more,
+.product-tag.more {
   background-color: var(--text-muted);
   color: white;
 }
-
+.producten-label,
+.problematieken-label {
+  font-weight: 600;
+  color: var(--text-color);
+  font-size: 0.875rem;
+  /* margin-right: 0.5rem; */
+}
+.problematiek-tag.empty,
+.product-tag.empty {
+  background-color: var(--cjg-paars);
+  color: white;
+  font-style: italic;
+}
 .tile-footer {
+  display: flex;
+  gap: 12px;
   margin-top: 1rem;
   padding-top: 1rem;
   border-top: 1px solid var(--border-color);
@@ -303,8 +342,11 @@ body {
 
 .details-btn {
   background: none;
-  border: none;
-  color: var(--primary-color);
+  flex: 1;
+  border: 0.9px solid var(--text-color);
+  border-radius: var(--radius-sm);
+  padding: 0.375rem 0.75rem;
+  color: var(--text-color);
   font-weight: 500;
   font-size: 0.875rem;
   cursor: pointer;
@@ -312,7 +354,9 @@ body {
 }
 
 .details-btn:hover {
-  color: var(--primary-hover);
+  background-color: var(--text-color);
+  color: var(--text-color-white);
+  transition: color 0.1s ease-in-out
 }
 
 .no-results {
@@ -333,6 +377,8 @@ body {
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -433,19 +479,28 @@ body {
   font-size: 0.875rem;
 }
 
-.specialisaties-list {
+.problematieken-list,
+.producten-list {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
 }
 
-.specialisatie-badge {
-  background-color: var(--success-color);
+.problematiek-badge {
+  background-color: var(--cjg-groen);
   color: white;
   padding: 0.375rem 0.75rem;
   border-radius: var(--radius-md);
-  font-size: 0.875rem;
-  font-weight: 500;
+  font-size: 1rem;
+  font-weight: 400;
+}
+.product-badge {
+  background-color: var(--cjg-blauw);
+  color: white;
+  padding: 0.375rem 0.75rem;
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  font-weight: 400;
 }
 
 .modal-footer {
@@ -457,7 +512,9 @@ body {
 }
 
 .primary-btn,
-.secondary-btn {
+.secondary-btn,
+.note-submit-btn,
+.note-cancel-btn {
   padding: 0.625rem 1.25rem;
   border-radius: var(--radius-md);
   font-size: 0.875rem;
@@ -465,6 +522,14 @@ body {
   cursor: pointer;
   transition: all 0.15s ease-in-out;
   border: none;
+}
+.note-submit-btn {
+  background-color: var(--cjg-groen);
+  color: white;
+}
+.note-cancel-btn {
+  background-color: var(--cjg-paars);
+  color: white;
 }
 
 .primary-btn {
@@ -477,11 +542,95 @@ body {
 }
 
 .secondary-btn {
-  background-color: var(--error-color);
+  background-color: var(--cjg-paars);
   color: white;
   border: 1px solid var(--border-color);
 }
-
 .secondary-btn:hover {
-  background-color: var(--primary-hover);
+  border-color: var(--primary-hover);
+}
+.location-text,
+.address-text {
+  font-weight: 600;
+  color: var(--text-color);
+  font-size: 0.875rem;
+}
+
+.note-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-color);
+  margin-bottom: 6px;
+  text-align: left;
+}
+.note-info {
+  padding: 0.875rem;
+  background-color: var(--background-color); 
+  border-radius: var(--radius-md); 
+  border-left: 4px solid var(--cjg-groen); 
+}
+.note-text {
+  font-size: 0.875rem;
+  color: var(--text-color);
+  font-style: italic;
+  text-align: left;
+}
+.note-owner {
+  font-size: 0.875rem;
+  color: var(--text-color);
+}
+.note-meta-block {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end; 
+}
+.note-date {
+  font-size: 0.875rem;
+  color: var(--text-color);
+  margin-top: 2px; /* Korte afstand direct onder de owner */
+}
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  text-align: left;
+}
+
+.form-group label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-color);
+}
+.note-input,
+.note-textarea {
+  width: 100%;
+  padding: 0.625rem 0.875rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  font-family: inherit;
+  background-color: var(--card-background);
+  color: var(--text-color);
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+.note-textarea {
+  resize: vertical;
+}
+.note-input:focus,
+.note-textarea:focus {
+  outline: none;
+  border-color: var(--cjg-blauw);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+/* Disabled state voor tijdens het API-verzoek */
+.note-submit-btn:disabled,
+.note-cancel-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }

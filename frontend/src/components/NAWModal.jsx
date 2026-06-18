@@ -50,14 +50,6 @@ function NAWModal({ zorgaanbieder, onClose }) {
                   <span>-</span>
                 )}
               </div>
-              {/* <div className="naw-item">
-                  <label>Type:</label>
-                  <span>{zorgaanbieder.type ?? "-"}</span>
-                </div>
-                <div className="naw-item">
-                  <label>Capaciteit:</label>
-                  <span>{zorgaanbieder.capaciteit ?? zorgaanbieder.capacity ?? "-"} plaatsen</span>
-                </div> */}
             </div>
           </div>
 
@@ -119,26 +111,64 @@ function NAWModal({ zorgaanbieder, onClose }) {
                     "-"}
                 </span>
               </div>
-              {/* <div className="naw-item">
-                <label>Email:</label>
-                <span>{zorgaanbieder.naw?.email ?? zorgaanbieder.email ?? "-"}</span>
-              </div> */}
-              {/* <div className="naw-item">
-                <label>Contactpersoon:</label>
-                <span>{zorgaanbieder.naw?.contactpersoon ?? zorgaanbieder.contact_person ?? "-"}</span>
-              </div> */}
+            </div>
+          </div>
+          <div className="naw-section">
+            <h3>Opmerkingen</h3>
+            {zorgaanbieder.notes && zorgaanbieder.notes.length > 0 ? (
+              <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+                {[...zorgaanbieder.notes]
+                  .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+                  .map((note, index) => (
+                    <div key={note.id || index} className="note-info">
+                      <div className="note-text">"{note.text}"</div>
+                      <div className="note-meta-block">
+                        <div className="note-owner">
+                          ~ {note.owner || "Onbekend"}
+                        </div>
+                        {note.created_at && (
+                          <div className="note-date">
+                            {new Date(note.created_at).toLocaleDateString("nl-NL")}
+                            {" "}om{" "}
+                            {new Date(note.created_at).toLocaleTimeString("nl-NL", {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            })}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+              </div>
+            ) : (
+              <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)", margin: 0 }}>
+                Er zijn nog geen opmerkingen geplaatst voor deze zorgaanbieder.
+              </p>
+            )}
+          </div>
+          <div className="naw-section">
+            <h3>Producten</h3>
+            <div className="producten-list">
+              {(zorgaanbieder.producten || []).map((product) => (
+                <span
+                  key={product.id ?? product.name}
+                  className="product-badge"
+                >
+                  {product.name ?? product}
+                </span>
+              ))}
             </div>
           </div>
 
           <div className="naw-section">
-            <h3>Specialisaties</h3>
-            <div className="specialisaties-list">
-              {(zorgaanbieder.specialisaties || []).map((spec) => (
+            <h3>Problematiek</h3>
+            <div className="problematieken-list">
+              {(zorgaanbieder.problematieken || []).map((problematiek) => (
                 <span
-                  key={spec.id ?? spec.name}
-                  className="specialisatie-badge"
+                  key={problematiek.id ?? problematiek.name}
+                  className="problematiek-badge"
                 >
-                  {spec.name ?? spec}
+                  {problematiek.name ?? problematiek}
                 </span>
               ))}
             </div>
@@ -149,7 +179,6 @@ function NAWModal({ zorgaanbieder, onClose }) {
           <button className="secondary-btn" onClick={onClose}>
             Sluiten
           </button>
-          {/* <button className="primary-btn">Contact opnemen</button> */}
         </div>
       </div>
     </div>

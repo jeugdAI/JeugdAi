@@ -20,7 +20,7 @@ from django.http import JsonResponse
 
 def home(request):
     return JsonResponse({
-        'message': 'Document Checker Backend',
+        # 'message': 'Document Checker Backend',
         'frontend': 'http://localhost:5173',
         'api': '/api/',
         'admin': '/admin/'

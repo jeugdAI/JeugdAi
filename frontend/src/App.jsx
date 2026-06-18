@@ -2,32 +2,52 @@ import { useState, useEffect, useMemo } from "react";
 import FilterPanel from "./components/FilterPanel";
 import ZorgaanbiederTile from "./components/ZorgaanbiederTile";
 import NAWModal from "./components/NAWModal";
+import AddNoteModal from "./components/AddNoteModal";
 import "./App.css";
+import Logo_big from "/Logo_big.png";
 
 function App() {
   // STATE
   const [filters, setFilters] = useState({
     stad: "",
-    specialisatie: "",
+    problematiek: "",
+    product: "",
     search: "",
+    regio_indeling: [],
   });
 
+  const [allZorgaanbieders, setAllZorgaanbieders] = useState([]);
   const [zorgaanbieders, setZorgaanbieders] = useState([]);
-  const [specialisaties, setSpecialisaties] = useState([]);
+  const [problematieken, setProblematieken] = useState([]);
+  const [producten, setProducten] = useState([]);
 
   const [selectedZorgaanbieder, setSelectedZorgaanbieder] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isNoteModalOpen, setIsNoteModalOpen] = useState(false);
+  // ---------------------------------------
+  // Alle DATA (NO FILTERING)
+  // ---------------------------------------
+  useEffect(() => {
+    fetch("http://localhost:8000/api/zorgaanbieders/")
+      .then((res) => res.json())
+      .then((data) => setAllZorgaanbieders(data))
+      .catch((err) => console.error("Master data error:", err));
+  }, []);
 
   // ---------------------------------------
   // API CALL (WITH BACKEND FILTERING)
   // ---------------------------------------
   useEffect(() => {
     const params = new URLSearchParams();
-
+    if (filters.regio_indeling)      filters.regio_indeling.forEach((r) =>
+        params.append("regio_indeling", r),
+      );
     if (filters.stad) params.append("stad", filters.stad);
     if (filters.search) params.append("search", filters.search);
-    if (filters.specialisatie)
-      params.append("specialisatie", filters.specialisatie);
+    if (filters.problematiek)
+      params.append("problematiek", filters.problematiek);
+    if (filters.product)
+      params.append("product", filters.product);
 
     fetch(`http://localhost:8000/api/zorgaanbieders/?${params.toString()}`)
       .then((res) => res.json())
@@ -35,29 +55,41 @@ function App() {
       .catch((err) => console.error("Zorgaanbieders error:", err));
   }, [filters]);
 
-  // useEffect(() => {
-  //   fetch("http://localhost:8000/api/specialisaties/")
-  //     .then((res) => res.json())
-  //     .then((data) => setSpecialisaties(data))
-  //     .catch((err) => console.error("Specialisaties error:", err));
-  // }, []);
-
+  // ---------------------------------------
+  // PRODUCTS API
+  // ---------------------------------------
+  useEffect(() => {
+    fetch("http://localhost:8000/api/producten/")
+      .then((res) => res.json())
+      .then((data) => setProducten(data))
+      .catch((err) => console.error("Producten error:", err));
+  }, []);
   // ---------------------------------------
   // DERIVED DATA (NO FILTERING HERE!)
   // ---------------------------------------
   const steden = useMemo(() => {
-    return [...new Set(zorgaanbieders.map((z) => z.city))].sort();
-  }, [zorgaanbieders]);
+    return [...new Set(allZorgaanbieders.map((z) => z.city))].sort();
+  }, [allZorgaanbieders]);
 
-  const specialisatieOptions = useMemo(() => {
+  const problematiekOptions = useMemo(() => {
     return [
       ...new Set(
-        zorgaanbieders.flatMap((z) =>
-          (z.specialisaties || []).map((s) => s.name),
+        allZorgaanbieders.flatMap((z) =>
+          (z.problematieken || []).map((p) => p.name),
         ),
       ),
     ].sort();
-  }, [zorgaanbieders]);
+  }, [allZorgaanbieders]);
+
+  const productOptions = useMemo(() => {
+    return [
+      ...new Set(
+        allZorgaanbieders.flatMap((z) =>
+          (z.producten || []).map((p) => p.name),
+        ),
+      ),
+    ].sort();
+  }, [allZorgaanbieders]);
 
   // ---------------------------------------
   // HANDLERS
@@ -75,6 +107,23 @@ function App() {
     setIsModalOpen(false);
     setSelectedZorgaanbieder(null);
   };
+  const handleAddNoteClick = (zorgaanbieder) => {
+    console.log("Functie start voor:", zorgaanbieder.name);
+    setSelectedZorgaanbieder(zorgaanbieder);
+    setIsNoteModalOpen(true);
+  };
+
+  const handleCloseNoteModal = () => {
+    setIsNoteModalOpen(false);
+    setSelectedZorgaanbieder(null);
+  };
+  const handleSaveNote = (providerId, newNote) => {
+    const updateNotesList = (list) =>
+      list.map((z) => (z.id === providerId ? { ...z, notes: [...(z.notes || []), newNote] } : z));
+
+    setZorgaanbieders((prev) => updateNotesList(prev));
+    setAllZorgaanbieders((prev) => updateNotesList(prev));
+  };
 
   // ---------------------------------------
   // UI
@@ -82,8 +131,12 @@ function App() {
   return (
     <div className="dashboard">
       <header className="dashboard-header">
-        <h1>Zorgaanbieders Dashboard</h1>
-        <p>Vind en beheer zorgaanbieders in de regio</p>
+        <img src={Logo_big} alt="Logo CJG" />
+        <div className="header-text">
+          <h1>Zorgaanbieders Dashboard</h1>
+          <p>Vind en beheer zorgaanbieders in de regio</p>
+        </div>
+          <div className="header-spacer"></div>
       </header>
 
       <div className="dashboard-content">
@@ -92,7 +145,8 @@ function App() {
             filters={filters}
             onFilterChange={handleFilterChange}
             steden={steden}
-            specialisaties={specialisatieOptions}
+            problematieken={problematiekOptions}
+            producten={productOptions}
           />
         </aside>
 
@@ -106,7 +160,8 @@ function App() {
               <ZorgaanbiederTile
                 key={zorgaanbieder.id}
                 zorgaanbieder={zorgaanbieder}
-                onClick={() => handleTileClick(zorgaanbieder)}
+                onDetailsClick={() => handleTileClick(zorgaanbieder)}
+                onAddNoteClick={() => handleAddNoteClick(zorgaanbieder)}
               />
             ))}
           </div>
@@ -123,6 +178,13 @@ function App() {
         <NAWModal
           zorgaanbieder={selectedZorgaanbieder}
           onClose={handleCloseModal}
+        />
+      )}
+      {isNoteModalOpen && selectedZorgaanbieder && (
+        <AddNoteModal
+          zorgaanbieder={selectedZorgaanbieder}
+          onClose={handleCloseNoteModal}
+          onSave={handleSaveNote}
         />
       )}
     </div>
