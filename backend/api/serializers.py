@@ -36,5 +36,7 @@ class ZorgaanbiederSerializer(serializers.ModelSerializer):
             "problematieken",
             "producten",
             "notes",
-            "regio_indeling"
+            "regio_indeling",
+            "wachtrij_opmerking",
+            "wachtrij_laatst_aangepast"
         ]

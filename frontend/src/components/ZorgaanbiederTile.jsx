@@ -1,17 +1,12 @@
 import React from "react";
-import { MapPinIcon } from "@heroicons/react/24/outline";
 
-function ZorgaanbiederTile({ zorgaanbieder, onAddNoteClick, onDetailsClick }) {
+function ZorgaanbiederTile({ zorgaanbieder, onAddNoteClick, onDetailsClick, onEditWachtrijClick }) {
   const REGIO_LABELS = {
     lokaal: "Lokaal",
     regionaal: "Regionaal",
   };
 
-  const latestNote = zorgaanbieder.notes && zorgaanbieder.notes.length > 0
-    ? [...zorgaanbieder.notes].sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0]
-    : null;
-
-const handleButtonClick = (e, callback) => {
+  const handleButtonClick = (e, callback) => {
     e.stopPropagation();
     if (callback) callback();
   };
@@ -49,36 +44,38 @@ const handleButtonClick = (e, callback) => {
               .join(", ") || "Onbekend"}
           </span>
         </div>
-        {latestNote && (
-          <div className="note-container">
-            <div className="note-label">Laatste opmerking</div>
-            <div className="note-info">
-              <div className="note-text">
-                "{latestNote.text}"
-              </div>
-              
-              <div className="note-meta-block">
-                <div className="note-owner">
-                  ~ {latestNote.owner || "Onbekend"}
-                </div>
-                {latestNote.created_at && (
-                  <div className="note-date">
-                    {new Date(latestNote.created_at).toLocaleDateString("nl-NL")}
-                  </div>
-                )}
-              </div>
 
+        <div className="note-container">
+          <div className="note-label">Laatste wachtrij opmerking:</div>
+          <div className="note-info">
+            
+            <div className="note-text" style={{ fontStyle: !zorgaanbieder.wachtrij_opmerking ? 'italic' : 'normal', color: !zorgaanbieder.wachtrij_opmerking ? '#666' : 'inherit' }}>
+              {zorgaanbieder.wachtrij_opmerking 
+                ? `"${zorgaanbieder.wachtrij_opmerking}"` 
+                : "Er is momenteel geen wachtrij opmerking bekend."}
             </div>
-          </div>
-        )}
+            
+            {zorgaanbieder.wachtrij_opmerking && zorgaanbieder.wachtrij_laatst_aangepast && (
+              <div className="note-meta-block">
+                <div className="note-owner"></div> 
+                <div className="note-date">
+                  {new Date(zorgaanbieder.wachtrij_laatst_aangepast).toLocaleDateString("nl-NL")}
+                </div>
+              </div>
+            )}
 
+          </div>
         </div>
 
+      </div>
+
       <div className="tile-footer">
+        <button className="details-btn" onClick={(e) => handleButtonClick(e, onEditWachtrijClick)}>
+          Wachtrij opmerking
+        </button>
         <button className="details-btn" onClick={(e) => handleButtonClick(e, onAddNoteClick)}>
           + Opmerking
         </button>
-        <button className="details-btn">Bekijk details</button>
       </div>
     </div>
   );
