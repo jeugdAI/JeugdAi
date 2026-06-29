@@ -122,3 +122,35 @@ def opmerkingen_list(request):
             return JsonResponse({"error": "Ongeldige JSON data meegegeven."}, status=400)
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=500)
+# --------------------------------------------
+# ZORGAANBIEDER WAHCRIJ OPMERKING (Voor PATCH/Wachtrij)
+# --------------------------------------------
+@csrf_exempt
+@require_http_methods(["GET", "PATCH"])
+def zorgaanbieder_wachtrij_opmerking(request, pk):
+    # Probeer eerst de specifieke zorgaanbieder op te halen
+    try:
+        zorgaanbieder = Zorgaanbieder.objects.get(pk=pk)
+    except Zorgaanbieder.DoesNotExist:
+        return JsonResponse({"error": "Zorgaanbieder niet gevonden."}, status=404)
+
+    if request.method == "GET":
+        serializer = ZorgaanbiederSerializer(zorgaanbieder)
+        return JsonResponse(serializer.data, safe=False)
+
+    elif request.method == "PATCH":
+        try:
+            data = json.loads(request.body)
+            
+            serializer = ZorgaanbiederSerializer(zorgaanbieder, data=data, partial=True)
+            
+            if serializer.is_valid():
+                serializer.save()
+                return JsonResponse(serializer.data, status=200)
+            else:
+                return JsonResponse(serializer.errors, status=400)
+                
+        except json.JSONDecodeError:
+            return JsonResponse({"error": "Ongeldige JSON data meegegeven."}, status=400)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)

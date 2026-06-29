@@ -43,6 +43,9 @@ class Zorgaanbieder(models.Model):
     city = models.CharField(max_length=100)
     regio_indeling = models.CharField(max_length=20, choices=REGION_CHOICES)
     
+    wachtrij_opmerking = models.TextField(blank=True, null=True)
+    wachtrij_laatst_aangepast = models.DateField(blank=True, null=True)
+
     # Hier zetten we de connectie van zorgaanbieders naar problematieken.
     # Een zorgaanbieder kan meerdere problematieken behandelen, en een problematiek kan 
     # door meerdere zorgaanbieders worden behandeld.
@@ -80,7 +83,6 @@ class Opmerking(models.Model):
     created_at = models.DateTimeField(auto_now_add=True) 
 
     class Meta:
-        # De naam van de tabel in de database
         db_table = 'opmerkingen' 
         verbose_name = 'Opmerking'
         verbose_name_plural = 'Opmerkingen'

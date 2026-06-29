@@ -3,6 +3,7 @@ import FilterPanel from "./components/FilterPanel";
 import ZorgaanbiederTile from "./components/ZorgaanbiederTile";
 import NAWModal from "./components/NAWModal";
 import AddNoteModal from "./components/AddNoteModal";
+import EditWachtrijModal from "./components/EditWachtrijModal";
 import "./App.css";
 import Logo_big from "/Logo_big.png";
 
@@ -24,6 +25,7 @@ function App() {
   const [selectedZorgaanbieder, setSelectedZorgaanbieder] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isNoteModalOpen, setIsNoteModalOpen] = useState(false);
+  const [isWachtrijModalOpen, setIsWachtrijModalOpen] = useState(false);
   // ---------------------------------------
   // Alle DATA (NO FILTERING)
   // ---------------------------------------
@@ -124,6 +126,24 @@ function App() {
     setZorgaanbieders((prev) => updateNotesList(prev));
     setAllZorgaanbieders((prev) => updateNotesList(prev));
   };
+  const handleEditWachtrijClick = (zorgaanbieder) => {
+    setSelectedZorgaanbieder(zorgaanbieder);
+    setIsWachtrijModalOpen(true);
+  };
+
+  const handleCloseWachtrijModal = () => {
+    setIsWachtrijModalOpen(false);
+    setSelectedZorgaanbieder(null);
+  };
+
+  const handleSaveWachtrij = (updatedZorgaanbieder) => {
+    // Deze functie vervangt de oude zorgaanbieder data door de nieuwe (met geüpdatete wachtrij)
+    const updateList = (list) =>
+      list.map((z) => (z.id === updatedZorgaanbieder.id ? updatedZorgaanbieder : z));
+
+    setZorgaanbieders((prev) => updateList(prev));
+    setAllZorgaanbieders((prev) => updateList(prev));
+  };
 
   // ---------------------------------------
   // UI
@@ -162,6 +182,7 @@ function App() {
                 zorgaanbieder={zorgaanbieder}
                 onDetailsClick={() => handleTileClick(zorgaanbieder)}
                 onAddNoteClick={() => handleAddNoteClick(zorgaanbieder)}
+                onEditWachtrijClick={() => handleEditWachtrijClick(zorgaanbieder)}
               />
             ))}
           </div>
@@ -185,6 +206,13 @@ function App() {
           zorgaanbieder={selectedZorgaanbieder}
           onClose={handleCloseNoteModal}
           onSave={handleSaveNote}
+        />
+      )}
+      {isWachtrijModalOpen && selectedZorgaanbieder && (
+        <EditWachtrijModal
+          zorgaanbieder={selectedZorgaanbieder}
+          onClose={handleCloseWachtrijModal}
+          onSave={handleSaveWachtrij}
         />
       )}
     </div>

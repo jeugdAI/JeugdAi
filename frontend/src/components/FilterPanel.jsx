@@ -137,7 +137,14 @@ function FilterPanel({ filters, onFilterChange, steden, producten, problematieke
       {/* SUMMARY */}
       <div className="filter-summary">
         <p className="filter-count">
-          {Object.values(filters).filter((v) => v !== "").length} filter(s) actief
+          {Object.values(filters).filter((v) => {
+            // Check voor lege strings
+            if (typeof v === "string" && v === "") return false;
+            // Check voor lege arrays (zoals de checkboxes)
+            if (Array.isArray(v) && v.length === 0) return false;
+            // Anders telt het als een actief filter
+            return true;
+          }).length} filter(s) actief
         </p>
       </div>
     </div>
