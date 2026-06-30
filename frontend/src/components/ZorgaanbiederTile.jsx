@@ -52,7 +52,7 @@ function ZorgaanbiederTile({ zorgaanbieder, onAddNoteClick, onDetailsClick, onEd
             <div className="note-text" style={{ fontStyle: !zorgaanbieder.wachtrij_opmerking ? 'italic' : 'normal', color: !zorgaanbieder.wachtrij_opmerking ? '#666' : 'inherit' }}>
               {zorgaanbieder.wachtrij_opmerking 
                 ? `"${zorgaanbieder.wachtrij_opmerking}"` 
-                : "Er is momenteel geen wachtrij opmerking bekend."}
+                : "Geen wachtrij opmerking"}
             </div>
             
             {zorgaanbieder.wachtrij_opmerking && zorgaanbieder.wachtrij_laatst_aangepast && (
