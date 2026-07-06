@@ -15,77 +15,77 @@ export default function BeschikkingForm() {
   const [analysisResults, setAnalysisResults] = useState([]);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
 
-  const analyzeBeschikking = () => {
+  const analyzeBeschikking = async () => {
+    if (!beschikkingText.trim()) {
+      setAnalysisResults([
+        {
+          type: 'error',
+          message: 'Vul de inhoud van de beschikking in voordat u analyseert.'
+        }
+      ]);
+      return;
+    }
+
     setIsAnalyzing(true);
+    setAnalysisResults([]);
 
-    setTimeout(() => {
-      const results = [];
-      const text = beschikkingText.toLowerCase();
+    try {
+      const response = await fetch('/api/analyze/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          beschikkingText,
+          datum,
+          kenmerk,
+          naamClient,
+          behandelaar,
+          telefoon,
+          typeZorg,
+          besluit,
+          ingangsdatum,
+          duurZorg
+        })
+      });
 
-      if (!datum) {
-        results.push({ type: 'error', message: 'Ontbrekend: Datum van de beschikking is niet ingevuld.' });
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => null);
+        const errorMessage = errorData?.error || `Analyse mislukt: ${response.status} ${response.statusText}`;
+        throw new Error(errorMessage);
       }
 
-      if (!kenmerk) {
-        results.push({ type: 'warning', message: 'Ontbrekend: Referentienummer/kenmerk voor administratieve verwerking.' });
-      }
-
-      if (!naamClient) {
-        results.push({ type: 'error', message: 'Ontbrekend: Naam van de cliënt/betrokkene is niet ingevuld.' });
-      }
-
-      if (!behandelaar) {
-        results.push({ type: 'warning', message: 'Ontbrekend: Naam behandelend ambtenaar is niet ingevuld.' });
-      }
-
-      if (!typeZorg) {
-        results.push({ type: 'error', message: 'Ontbrekend: Type zorg is niet ingevuld.' });
-      }
-
-      if (!besluit) {
-        results.push({ type: 'error', message: 'Ontbrekend: Besluit (toekennen/afwijzen) is niet geselecteerd.' });
-      }
-
-      if (besluit === 'toekennen') {
-        if (!ingangsdatum) {
-          results.push({ type: 'warning', message: 'Ontbrekend: Bij toekenning moet de ingangsdatum worden ingevuld.' });
-        }
-        if (!duurZorg) {
-          results.push({ type: 'warning', message: 'Ontbrekend: Duur van de toegekende zorg is niet ingevuld.' });
-        }
-      }
-
-      if (!beschikkingText.trim()) {
-        results.push({ type: 'error', message: 'Ontbrekend: De inhoud van de beschikking is leeg. Vul de motivering, overwegingen en het besluit in.' });
-      }
-
-      if (beschikkingText.trim() && !text.includes('motivering') && !text.includes('overweging') && !text.includes('omdat')) {
-        results.push({ type: 'error', message: 'Ontbrekend: Motivering of overwegingen voor het besluit ontbreken. Een beschikking moet gemotiveerd zijn.' });
-      }
-
-      if (!text.includes('bezwaar') && !text.includes('rechtsmiddel')) {
-        results.push({ type: 'warning', message: 'Ontbrekend: Informatie over bezwaarmogelijkheden (rechtsmiddelen) ontbreekt. Dit is wettelijk verplicht.' });
-      }
-
-      if (besluit === 'afwijzen' && !text.includes('jeugdwet') && !text.includes('artikel')) {
-        results.push({ type: 'error', message: 'Fout: Bij afwijzing moet verwezen worden naar de wettelijke grondslag (bijv. Jeugdwet).' });
-      }
-
-      if (beschikkingText.includes('XXX') || beschikkingText.includes('[')) {
-        results.push({ type: 'error', message: 'Fout: Er staan nog placeholders in de tekst (XXX, [ ]).' });
-      }
-
-      if (beschikkingText.length < 200) {
-        results.push({ type: 'warning', message: 'Waarschuwing: De beschikking lijkt erg kort. Controleer of alle vereiste informatie aanwezig is.' });
-      }
+      const data = await response.json();
+      console.log('[analysis] Backend response', data);
+      const results = (Array.isArray(data.results) ? data.results : []).map((item) => {
+        const title = item.title ? `${item.title}: ` : '';
+        const details = item.message || item.advies || '';
+        const message = details.startsWith(item.title) ? details : `${title}${details}`.trim();
+        return { ...item, message };
+      });
 
       if (results.length === 0) {
-        results.push({ type: 'success', message: 'De beschikking bevat alle essentiële elementen. Controleer nog wel de inhoudelijke juistheid en spelling.' });
+        const fallbackMessage = data?.summary?.conclusion || data?.error || data?.raw || 'Geen analyse-resultaten ontvangen. Controleer het procesdocument en de backend.';
+        setAnalysisResults([
+          {
+            type: 'warning',
+            message: fallbackMessage
+          }
+        ]);
+      } else {
+        setAnalysisResults(results);
       }
-
-      setAnalysisResults(results);
+    } catch (error) {
+      console.error('[analysis] Frontend error', error);
+      setAnalysisResults([
+        {
+          type: 'error',
+          message: error.message || 'Er is een fout opgetreden tijdens de analyse.'
+        }
+      ]);
+    } finally {
       setIsAnalyzing(false);
-    }, 1000);
+    }
   };
 
   return (
@@ -267,7 +267,7 @@ export default function BeschikkingForm() {
             onChange={(e) => setBeschikkingText(e.target.value)}
             rows={15}
             className="beschikking-textarea"
-            placeholder={`Geachte heer/mevrouw [naam],\n\nOp [datum] hebben wij uw aanvraag voor jeugdzorg ontvangen...\n\nMotivering en overwegingen:\n[Beschrijf hier waarom het besluit genomen wordt, op basis van welke criteria, etc.]\n\nBesluit:\nWij kennen toe/wijzen af...\n\nRechtsmiddelen:\nTegen deze beschikking kunt u binnen 6 weken bezwaar maken bij het college van B&W van de gemeente Capelle aan den IJssel...\n\nMet vriendelijke groet,\n[naam behandelaar]`}
+            placeholder="Typ hier de inhoud van de beschikking die moet worden geanalyseerd."
           />
         </div>
 
